@@ -27,7 +27,7 @@ const relayRoute = require('./api/routes/relay');
 class NodeHttpServer {
   constructor(config) {
     this.port = config.http.port || HTTP_PORT;
-    this.mediaroot = config.http.mediaroot || HTTP_MEDIAROOT;
+    this.media_root = config.paths.media_root || HTTP_MEDIAROOT;
     this.config = config;
 
     let app = Express();
@@ -64,9 +64,9 @@ class NodeHttpServer {
     }
 
     app.use(Express.static(path.join(__dirname + '/public')));
-    app.use(Express.static(this.mediaroot));
-    if (config.http.webroot) {
-      app.use(Express.static(config.http.webroot));
+    app.use(Express.static(this.media_root));
+    if (config.paths.web_root) {
+      app.use(Express.static(config.paths.web_root));
     }
 
     this.httpServer = Http.createServer(app);

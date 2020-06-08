@@ -10,8 +10,6 @@ const config = {
   },
   http: {
     port: 8000,
-    mediaroot: './media',
-    webroot: './www',
     allow_origin: '*',
     api: true
   },
@@ -28,6 +26,10 @@ const config = {
     publish: false,
     secret: 'nodemedia2017privatekey'
   },
+  paths: {
+    media_root: './media',
+    web_root: './www',
+  }
 };
 
 
