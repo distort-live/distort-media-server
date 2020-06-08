@@ -51,7 +51,7 @@ class NodeTransServer {
     }
     context.nodeEvent.on('postPublish', this.onPostPublish.bind(this));
     context.nodeEvent.on('donePublish', this.onDonePublish.bind(this));
-    Logger.log(`Node Media Trans Server started for apps: [ ${apps}] , MediaRoot: ${this.config.http.mediaroot}, ffmpeg version: ${version}`);
+    Logger.log(`Node Media Trans Server started for apps: [ ${apps}] , MediaRoot: ${media_root}, ffmpeg version: ${version}`);
   }
 
   onPostPublish(id, streamPath, args) {
@@ -61,7 +61,7 @@ class NodeTransServer {
     while (i--) {
       let conf = this.config.trans.tasks[i];
       conf.ffmpeg = this.config.trans.ffmpeg;
-      conf.mediaroot = this.config.http.mediaroot;
+      conf.mediaroot = this.config.paths.media_root;
       conf.rtmpPort = this.config.rtmp.port;
       conf.streamPath = streamPath;
       conf.streamApp = app;
