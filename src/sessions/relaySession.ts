@@ -4,13 +4,12 @@
 //  Copyright (c) 2018 Nodemedia. All rights reserved.
 //
 import * as Logger from "../core/logger";
+import {EventEmitter} from "events";
+import {ChildProcessWithoutNullStreams} from "child_process";
 
 const NodeCoreUtils = require("../core/utils");
 
 const {spawn} = require('child_process');
-
-import {EventEmitter} from "events";
-import {ChildProcessWithoutNullStreams} from "child_process";
 
 const RTSP_TRANSPORT = ['udp', 'tcp', 'udp_multicast', 'http'];
 

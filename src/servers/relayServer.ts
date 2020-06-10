@@ -84,19 +84,19 @@ export default class NodeRelayServer {
     //从远端拉推到本地
     onRelayPull(url: string, app: string, name: string) {
         let conf: {
-          app: string;
-          name: string;
+            app: string;
+            name: string;
 
-          ffmpeg: any;
+            ffmpeg: any;
 
-          inPath: string;
-          ouPath: string;
+            inPath: string;
+            ouPath: string;
         } = {
-          app: app,
-          name: name,
-          ffmpeg: this.config.relay.ffmpeg,
-          inPath: url,
-          ouPath: `rtmp://127.0.0.1:${this.config.rtmp.port}/${app}/${name}`
+            app: app,
+            name: name,
+            ffmpeg: this.config.relay.ffmpeg,
+            inPath: url,
+            ouPath: `rtmp://127.0.0.1:${this.config.rtmp.port}/${app}/${name}`
         };
 
         let session = new NodeRelaySession(conf);
@@ -117,19 +117,19 @@ export default class NodeRelayServer {
     //从本地拉推到远端
     onRelayPush(url: string, app, name) {
         let conf: {
-          app: any;
-          name: string;
+            app: any;
+            name: string;
 
-          ffmpeg: any;
+            ffmpeg: any;
 
-          inPath: string;
-          ouPath: string;
+            inPath: string;
+            ouPath: string;
         } = {
-          app: app,
-          name: name,
-          ffmpeg: this.config.relay.ffmpeg,
-          inPath: `rtmp://127.0.0.1:${this.config.rtmp.port}/${app}/${name}`,
-          ouPath: url
+            app: app,
+            name: name,
+            ffmpeg: this.config.relay.ffmpeg,
+            inPath: `rtmp://127.0.0.1:${this.config.rtmp.port}/${app}/${name}`,
+            ouPath: url
         };
 
         let session = new NodeRelaySession(conf);
