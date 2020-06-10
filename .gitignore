@@ -22,6 +22,7 @@ coverage
 # Commenting this out is preferred by some people, see
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git-
 node_modules
+package-lock.json
 
 # Users Environment Variables
 .lock-wscript
@@ -30,3 +31,6 @@ node_modules
 *.ts
 *.mp4
 *.mpd
+
+# Intellij IDEA
+/.idea/
