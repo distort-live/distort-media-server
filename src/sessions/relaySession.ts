@@ -15,7 +15,7 @@ const RTSP_TRANSPORT = ['udp', 'tcp', 'udp_multicast', 'http'];
 
 // const TAG = "relay";
 
-export default class NodeRelaySession extends EventEmitter {
+export default class RelaySession extends EventEmitter {
     id: string;
     config: any;
 

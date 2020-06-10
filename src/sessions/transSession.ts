@@ -14,7 +14,7 @@ import {EventEmitter} from "events";
 
 import {ChildProcessWithoutNullStreams, spawn} from "child_process";
 
-export default class NodeTransSession extends EventEmitter {
+export default class TransSession extends EventEmitter {
     config: any;
 
     ffmpeg_exec: ChildProcessWithoutNullStreams;

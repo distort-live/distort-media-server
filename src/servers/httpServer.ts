@@ -16,7 +16,7 @@ import * as WebSocket from "ws";
 
 const bodyParser = require('body-parser');
 const basicAuth = require('basic-auth-connect');
-const NodeFlvSession = require('../sessions/flvSession');
+const FlvSession = require('../sessions/flvSession');
 
 const Logger = require('../core/logger');
 const context = require('../core/context');
@@ -29,9 +29,9 @@ const streamsRoute = require('../api/routes/streams');
 const serverRoute = require('../api/routes/server');
 const relayRoute = require('../api/routes/relay');
 
-export default class NodeHttpServer {
+export default class HttpServer {
     port: number;
-    sport: number; // HTTPS порт
+    sport: number; // HTTPS port
     config: any;
 
     mediaRoot: string;
@@ -162,7 +162,7 @@ export default class NodeHttpServer {
 
         context.nodeEvent.on('doneConnect', (id, args) => {
             let session = context.sessions.get(id);
-            let socket = session instanceof NodeFlvSession ? session.req.socket : session.socket;
+            let socket = session instanceof FlvSession ? session.req.socket : session.socket;
             context.stat.inbytes += socket.bytesRead;
             context.stat.outbytes += socket.bytesWritten;
         });
@@ -174,7 +174,7 @@ export default class NodeHttpServer {
             this.httpsServer.close();
         }
         context.sessions.forEach((session, id) => {
-            if (session instanceof NodeFlvSession) {
+            if (session instanceof FlvSession) {
                 session.req.destroy();
                 context.sessions.delete(id);
             }
@@ -182,7 +182,7 @@ export default class NodeHttpServer {
     }
 
     onConnect(req, res) {
-        let session = new NodeFlvSession(this.config, req, res);
+        let session = new FlvSession(this.config, req, res);
         session.run();
     }
 }

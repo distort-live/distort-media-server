@@ -7,7 +7,7 @@ const _ = require('lodash');
 function getStreams(req, res, next) {
     let stats = {};
     this.sessions.forEach(function (session, id) {
-        if (session.constructor.name !== 'NodeRelaySession') {
+        if (session.constructor.name !== 'RelaySession') {
             return;
         }
         let { app, name } = session.conf;

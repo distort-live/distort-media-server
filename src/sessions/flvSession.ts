@@ -18,7 +18,7 @@ const FlvPacket = {
     }
 };
 
-export default class NodeFlvSession {
+export default class FlvSession {
     id: string;
     ip: string;
 
@@ -182,21 +182,21 @@ export default class NodeFlvSession {
         //send Metadata
         if (publisher.metaData != null) {
             let packet = FlvPacket.create(publisher.metaData, 18);
-            let tag = NodeFlvSession.createFlvTag(packet);
+            let tag = FlvSession.createFlvTag(packet);
             this.res.write(tag);
         }
 
         //send aacSequenceHeader
         if (publisher.audioCodec == 10) {
             let packet = FlvPacket.create(publisher.aacSequenceHeader, 8);
-            let tag = NodeFlvSession.createFlvTag(packet);
+            let tag = FlvSession.createFlvTag(packet);
             this.res.write(tag);
         }
 
         //send avcSequenceHeader
         if (publisher.videoCodec == 7 || publisher.videoCodec == 12) {
             let packet = FlvPacket.create(publisher.avcSequenceHeader, 9);
-            let tag = NodeFlvSession.createFlvTag(packet);
+            let tag = FlvSession.createFlvTag(packet);
             this.res.write(tag);
         }
 

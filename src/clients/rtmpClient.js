@@ -246,7 +246,7 @@ class NodeRtmpClient {
     }
 
     pushAudio(audioData, timestamp) {
-        if (this.streamId == 0) return;
+        if (this.streamId === 0) return;
         let packet = RtmpPacket.create();
         packet.header.fmt = RTMP_CHUNK_TYPE_0;
         packet.header.cid = RTMP_CHANNEL_AUDIO;
@@ -259,7 +259,7 @@ class NodeRtmpClient {
     }
 
     pushVideo(videoData, timestamp) {
-        if (this.streamId == 0) return;
+        if (this.streamId === 0) return;
         let packet = RtmpPacket.create();
         packet.header.fmt = RTMP_CHUNK_TYPE_0;
         packet.header.cid = RTMP_CHANNEL_VIDEO;
@@ -272,7 +272,7 @@ class NodeRtmpClient {
     }
 
     pushScript(scriptData, timestamp) {
-        if (this.streamId == 0) return;
+        if (this.streamId === 0) return;
         let packet = RtmpPacket.create();
         packet.header.fmt = RTMP_CHUNK_TYPE_0;
         packet.header.cid = RTMP_CHANNEL_DATA;

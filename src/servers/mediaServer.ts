@@ -6,20 +6,20 @@
 
 import * as Logger from "../core/logger";
 
-import NodeRtmpServer from "./rtmpServer";
-import NodeHttpServer from "./httpServer";
-import NodeTransServer from "./transServer";
-import NodeRelayServer from "./relayServer";
+import RtmpServer from "./rtmpServer";
+import HttpServer from "./httpServer";
+import TransServer from "./transServer";
+import RelayServer from "./relayServer";
 
 import Context from "../core/context";
 
-export default class NodeMediaServer {
+export default class MediaServer {
     config: any;
 
-    nrs: NodeRtmpServer;
-    nhs: NodeHttpServer;
-    nts: NodeTransServer;
-    nls: NodeRelayServer;
+    nrs: RtmpServer;
+    nhs: HttpServer;
+    nts: TransServer;
+    nls: RelayServer;
 
     constructor(config) {
         this.config = config;
@@ -29,12 +29,12 @@ export default class NodeMediaServer {
         Logger.setLogType(this.config.logType);
 
         if (this.config.rtmp) {
-            this.nrs = new NodeRtmpServer(this.config);
+            this.nrs = new RtmpServer(this.config);
             this.nrs.run();
         }
 
         if (this.config.http) {
-            this.nhs = new NodeHttpServer(this.config);
+            this.nhs = new HttpServer(this.config);
             this.nhs.run();
         }
 
@@ -42,7 +42,7 @@ export default class NodeMediaServer {
             if (this.config.cluster) {
                 Logger.log('NodeTransServer does not work in cluster mode');
             } else {
-                this.nts = new NodeTransServer(this.config);
+                this.nts = new TransServer(this.config);
                 this.nts.run();
             }
         }
@@ -51,7 +51,7 @@ export default class NodeMediaServer {
             if (this.config.cluster) {
                 Logger.log('NodeRelayServer does not work in cluster mode');
             } else {
-                this.nls = new NodeRelayServer(this.config);
+                this.nls = new RelayServer(this.config);
                 this.nls.run();
             }
         }

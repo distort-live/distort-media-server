@@ -25,7 +25,7 @@ class Bitop {
             this.bufoff += d;
             n -= d;
 
-            if (this.bufoff == 8) {
+            if (this.bufoff === 8) {
                 this.bufpos++;
                 this.bufoff = 0;
             }
@@ -44,7 +44,7 @@ class Bitop {
 
     read_golomb() {
         let n;
-        for (n = 0; this.read(1) == 0 && !this.iserro; n++) ;
+        for (n = 0; this.read(1) === 0 && !this.iserro; n++) ;
         return (1 << n) + this.read(n) - 1;
     }
 }

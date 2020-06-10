@@ -9,11 +9,11 @@ import * as net from "net";
 import * as Logger from "../core/logger";
 
 import Context from "../core/context";
-import NodeRtmpSession from "../sessions/rtmpSession";
+import RtmpSession from "../sessions/rtmpSession";
 
 const RTMP_PORT = 1935;
 
-export default class NodeRtmpServer {
+export default class RtmpServer {
     port: number;
 
     tcpServer: net.Server;
@@ -21,7 +21,7 @@ export default class NodeRtmpServer {
     constructor(config) {
         config.rtmp.port = this.port = config.rtmp.port ? config.rtmp.port : RTMP_PORT;
         this.tcpServer = net.createServer((socket) => {
-            let session = new NodeRtmpSession(config, socket);
+            let session = new RtmpSession(config, socket);
             session.run();
         });
     }
@@ -44,7 +44,7 @@ export default class NodeRtmpServer {
         this.tcpServer.close();
 
         Context.sessions.forEach((session, id) => {
-            if (session instanceof NodeRtmpSession)
+            if (session instanceof RtmpSession)
                 session.stop();
         });
     }

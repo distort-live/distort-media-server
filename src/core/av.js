@@ -66,7 +66,7 @@ function getObjectType(bitop) {
 
 function getSampleRate(bitop, info) {
     info.sampling_index = bitop.read(4);
-    return info.sampling_index == 0x0f ? bitop.read(24) : AAC_SAMPLE_RATE[info.sampling_index];
+    return info.sampling_index === 0x0f ? bitop.read(24) : AAC_SAMPLE_RATE[info.sampling_index];
 }
 
 function readAACSpecificConfig(aacSequenceHeader) {
@@ -81,8 +81,8 @@ function readAACSpecificConfig(aacSequenceHeader) {
     }
     info.sbr = -1;
     info.ps = -1;
-    if (info.object_type == 5 || info.object_type == 29) {
-        if (info.object_type == 29) {
+    if (info.object_type === 5 || info.object_type === 29) {
+        if (info.object_type === 29) {
             info.ps = 1;
         }
         info.ext_object_type = 5;
@@ -133,14 +133,14 @@ function readH264SpecificConfig(avcSequenceHeader) {
         info.level = bitop.read(8);
         info.nalu = (bitop.read(8) & 0x03) + 1;
         info.nb_sps = bitop.read(8) & 0x1F;
-        if (info.nb_sps == 0) {
+        if (info.nb_sps === 0) {
             break;
         }
         /* nal size */
         bitop.read(16);
 
         /* nal type */
-        if (bitop.read(8) != 0x67) {
+        if (bitop.read(8) !== 0x67) {
             break;
         }
         /* SPS */
@@ -155,13 +155,13 @@ function readH264SpecificConfig(avcSequenceHeader) {
         /* SPS id */
         bitop.read_golomb();
 
-        if (profile_idc == 100 || profile_idc == 110 ||
-            profile_idc == 122 || profile_idc == 244 || profile_idc == 44 ||
-            profile_idc == 83 || profile_idc == 86 || profile_idc == 118) {
+        if (profile_idc === 100 || profile_idc === 110 ||
+            profile_idc === 122 || profile_idc === 244 || profile_idc === 44 ||
+            profile_idc === 83 || profile_idc === 86 || profile_idc === 118) {
             /* chroma format idc */
             cf_idc = bitop.read_golomb();
 
-            if (cf_idc == 3) {
+            if (cf_idc === 3) {
 
                 /* separate color plane */
                 bitop.read(1);
@@ -179,7 +179,7 @@ function readH264SpecificConfig(avcSequenceHeader) {
             /* seq scaling matrix present */
             if (bitop.read(1)) {
 
-                for (n = 0; n < (cf_idc != 3 ? 8 : 12); n++) {
+                for (n = 0; n < (cf_idc !== 3 ? 8 : 12); n++) {
 
                     /* seq scaling list present */
                     if (bitop.read(1)) {
@@ -347,7 +347,7 @@ function HEVCParseSPS(SPS, hevc) {
     bitop.read(3);//nuh_temporal_id_plus1
 
     for (let i = 2; i < NumBytesInNALunit; i++) {
-        if (i + 2 < NumBytesInNALunit && bitop.look(24) == 0x000003) {
+        if (i + 2 < NumBytesInNALunit && bitop.look(24) === 0x000003) {
             rbsp_array.push(bitop.read(8));
             rbsp_array.push(bitop.read(8));
             i += 2;
@@ -364,7 +364,7 @@ function HEVCParseSPS(SPS, hevc) {
     psps.profile_tier_level = HEVCParsePtl(rbspBitop, hevc, psps.sps_max_sub_layers_minus1);
     psps.sps_seq_parameter_set_id = rbspBitop.read_golomb();
     psps.chroma_format_idc = rbspBitop.read_golomb();
-    if (psps.chroma_format_idc == 3) {
+    if (psps.chroma_format_idc === 3) {
         psps.separate_colour_plane_flag = rbspBitop.read(1);
     } else {
         psps.separate_colour_plane_flag = 0;
@@ -401,7 +401,7 @@ function readHEVCSpecificConfig(hevcSequenceHeader) {
         }
 
         hevc.configurationVersion = hevcSequenceHeader[0];
-        if (hevc.configurationVersion != 1) {
+        if (hevc.configurationVersion !== 1) {
             break;
         }
         hevc.general_profile_space = (hevcSequenceHeader[1] >> 6) & 0x03;
@@ -441,7 +441,7 @@ function readHEVCSpecificConfig(hevcSequenceHeader) {
                     break;
                 }
                 p = p.slice(2);
-                if (nalutype == 33) {
+                if (nalutype === 33) {
                     //SPS
                     let sps = Buffer.alloc(k);
                     p.copy(sps, 0, 0, k);
@@ -462,9 +462,9 @@ function readHEVCSpecificConfig(hevcSequenceHeader) {
 
 function readAVCSpecificConfig(avcSequenceHeader) {
     let codec_id = avcSequenceHeader[0] & 0x0f;
-    if (codec_id == 7) {
+    if (codec_id === 7) {
         return readH264SpecificConfig(avcSequenceHeader);
-    } else if (codec_id == 12) {
+    } else if (codec_id === 12) {
         return readHEVCSpecificConfig(avcSequenceHeader);
     }
 }

@@ -12,7 +12,7 @@ const fs = require('fs');
 const _ = require('lodash');
 const mkdirp = require('mkdirp');
 
-export default class NodeTransServer {
+export default class TransServer {
     constructor(config) {
         this.config = config;
         this.transSessions = new Map();
@@ -68,7 +68,7 @@ export default class NodeTransServer {
             conf.streamName = name;
             conf.args = args;
             if (app === conf.app) {
-                let session = new NodeTransSession(conf);
+                let session = new TransSession(conf);
                 this.transSessions.set(id, session);
                 session.on('end', () => {
                     this.transSessions.delete(id);

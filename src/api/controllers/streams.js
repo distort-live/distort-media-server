@@ -47,7 +47,7 @@ function getStreams(req, res, next) {
                 }
                 case !!session.playStreamPath: {
                     switch (session.constructor.name) {
-                        case 'NodeRtmpSession': {
+                        case 'RtmpSession': {
                             stats[app][stream]['subscribers'].push({
                                 app: app,
                                 stream: stream,
@@ -60,7 +60,7 @@ function getStreams(req, res, next) {
 
                             break;
                         }
-                        case 'NodeFlvSession': {
+                        case 'FlvSession': {
                             stats[app][stream]['subscribers'].push({
                                 app: app,
                                 stream: stream,

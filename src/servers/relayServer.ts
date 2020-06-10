@@ -6,13 +6,13 @@
 const Logger = require('../core/logger');
 
 const NodeCoreUtils = require('../core/utils');
-const NodeRelaySession = require('../sessions/relaySession');
+const RelaySession = require('../sessions/relaySession');
 const context = require('../core/context');
 const {getFFmpegVersion, getFFmpegUrl} = require('../core/utils');
 const fs = require('fs');
 const _ = require('lodash');
 
-export default class NodeRelayServer {
+export default class RelayServer {
     config: any;
 
     staticCycle: any;
@@ -68,7 +68,7 @@ export default class NodeRelayServer {
                 conf.ffmpeg = this.config.relay.ffmpeg;
                 conf.inPath = conf.edge;
                 conf.ouPath = `rtmp://127.0.0.1:${this.config.rtmp.port}/${conf.app}/${conf.name}`;
-                let session = new NodeRelaySession(conf);
+                let session = new RelaySession(conf);
                 session.id = i;
                 session.streamPath = `/${conf.app}/${conf.name}`;
                 session.on('end', (id) => {
@@ -99,7 +99,7 @@ export default class NodeRelayServer {
             ouPath: `rtmp://127.0.0.1:${this.config.rtmp.port}/${app}/${name}`
         };
 
-        let session = new NodeRelaySession(conf);
+        let session = new RelaySession(conf);
         const id = session.id;
         context.sessions.set(id, session);
 
@@ -132,7 +132,7 @@ export default class NodeRelayServer {
             ouPath: url
         };
 
-        let session = new NodeRelaySession(conf);
+        let session = new RelaySession(conf);
         const id = session.id;
         context.sessions.set(id, session);
 
@@ -161,7 +161,7 @@ export default class NodeRelayServer {
                 conf.ffmpeg = this.config.relay.ffmpeg;
                 conf.inPath = hasApp ? `${conf.edge}/${stream}` : `${conf.edge}${streamPath}`;
                 conf.ouPath = `rtmp://127.0.0.1:${this.config.rtmp.port}${streamPath}`;
-                let session = new NodeRelaySession(conf);
+                let session = new RelaySession(conf);
                 session.id = id;
                 session.on('end', (id) => {
                     this.dynamicSessions.delete(id);
@@ -196,7 +196,7 @@ export default class NodeRelayServer {
                 conf.ffmpeg = this.config.relay.ffmpeg;
                 conf.inPath = `rtmp://127.0.0.1:${this.config.rtmp.port}${streamPath}`;
                 conf.ouPath = conf.appendName === false ? conf.edge : (hasApp ? `${conf.edge}/${stream}` : `${conf.edge}${streamPath}`);
-                let session = new NodeRelaySession(conf);
+                let session = new RelaySession(conf);
                 session.id = id;
                 session.on('end', (id) => {
                     this.dynamicSessions.delete(id);

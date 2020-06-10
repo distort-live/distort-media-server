@@ -80,14 +80,14 @@ function amfType(o) {
     let jsType = typeof o;
 
     if (o === null) return 'null';
-    if (jsType == 'undefined') return 'undefined';
-    if (jsType == 'number') {
-        if (parseInt(o) == o) return 'integer';
+    if (jsType === 'undefined') return 'undefined';
+    if (jsType === 'number') {
+        if (parseInt(o) === o) return 'integer';
         return 'double';
     }
-    if (jsType == 'boolean') return o ? 'true' : 'false';
-    if (jsType == 'string') return 'string';
-    if (jsType == 'object') {
+    if (jsType === 'boolean') return o ? 'true' : 'false';
+    if (jsType === 'string') return 'string';
+    if (jsType === 'object') {
         if (o instanceof Array) {
             if (o.sarray) return 'sarray';
             return 'array';
@@ -186,7 +186,7 @@ function amf3decUI29(buf) {
         val = (val << 7) + (b & 0x7F);
     } while (len < 5 || b > 0x7F);
 
-    if (len == 5) val = val | b; // Preserve the major bit of the last byte
+    if (len === 5) val = val | b; // Preserve the major bit of the last byte
 
     return {len: len, value: val}
 }
@@ -401,7 +401,7 @@ function amf3encDate(ts) {
 function amf3decArray(buf) {
     let count = amf3decUI29(buf.slice(1));
     let obj = amf3decObject(buf.slice(count.len));
-    if (count.value % 2 == 1) throw new Error("This is a reference to another array, which currently we don't support!");
+    if (count.value % 2 === 1) throw new Error("This is a reference to another array, which currently we don't support!");
     return {len: count.len + obj.len, value: obj.value}
 }
 
@@ -459,7 +459,7 @@ function amf0encNumber(num) {
  * @returns {{len: number, value: boolean}}
  */
 function amf0decBool(buf) {
-    return {len: 2, value: (buf.readUInt8(1) != 0)}
+    return {len: 2, value: (buf.readUInt8(1) !== 0)}
 }
 
 /**
@@ -544,7 +544,7 @@ function amf0decObject(buf) { // TODO: Implement references!
     let iBuf = buf.slice(1);
     let len = 1;
     //    Logger.debug('ODec',iBuf.readUInt8(0));
-    while (iBuf.readUInt8(0) != 0x09) {
+    while (iBuf.readUInt8(0) !== 0x09) {
         // Logger.debug('Field', iBuf.readUInt8(0), iBuf);
         let prop = amf0decUString(iBuf);
         // Logger.debug('Got field for property', prop);
@@ -552,12 +552,12 @@ function amf0decObject(buf) { // TODO: Implement references!
         if (iBuf.length < prop.len) {
             break;
         }
-        if (iBuf.slice(prop.len).readUInt8(0) == 0x09) {
+        if (iBuf.slice(prop.len).readUInt8(0) === 0x09) {
             len++;
             // Logger.debug('Found the end property');
             break;
         } // END Object as value, we shall leave
-        if (prop.value == '') break;
+        if (prop.value === '') break;
         let val = amf0DecodeOne(iBuf.slice(prop.len));
         // Logger.debug('Got field for value', val);
         obj[prop.value] = val.value;
@@ -628,7 +628,7 @@ function amf0decUString(buf) {
 
 /**
  * Do AMD0 Encode of Untyped String
- * @param s
+ * @param str
  * @returns {Buffer}
  */
 function amf0encUString(str) {
