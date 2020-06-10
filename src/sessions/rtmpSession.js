@@ -4,6 +4,9 @@
 //  Copyright (c) 2018 Nodemedia. All rights reserved.
 //
 
+import context from "../core/context";
+import FlvSession from "./flvSession";
+
 const QueryString = require("querystring");
 const AV = require("../core/av");
 const {AUDIO_SOUND_RATE, AUDIO_CODEC_NAME, VIDEO_CODEC_NAME} = require("../core/av");
@@ -11,8 +14,6 @@ const {AUDIO_SOUND_RATE, AUDIO_CODEC_NAME, VIDEO_CODEC_NAME} = require("../core/
 const AMF = require("../core/amf");
 const Handshake = require("../servers/rtmpHandshake");
 const NodeCoreUtils = require("../core/utils");
-const FlvSession = require("./flvSession");
-const context = require("../core/context");
 const Logger = require("../core/logger");
 
 const N_CHUNK_STREAM = 8;

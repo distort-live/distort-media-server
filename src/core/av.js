@@ -425,7 +425,7 @@ function readHEVCSpecificConfig(hevcSequenceHeader) {
         let p = hevcSequenceHeader.slice(23);
         for (let i = 0; i < numOfArrays; i++) {
             if (p.length < 3) {
-                brak;
+                break;
             }
             let nalutype = p[0];
             let n = (p[1]) << 8 | p[2];

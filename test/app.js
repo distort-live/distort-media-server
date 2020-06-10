@@ -1,4 +1,4 @@
-import MediaServer from "../src/servers/mediaServer";
+const { default: MediaServer } = require("../build/servers/mediaServer");
 
 const config = {
     rtmp: {

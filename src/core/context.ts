@@ -1,8 +1,3 @@
-//
-//  Created by Mingliang Chen on 18/3/2.
-//  illuspas[a]gmail.com
-//  Copyright (c) 2018 Nodemedia. All rights reserved.
-//
 import {EventEmitter} from "events";
 
 let sessions = new Map();
@@ -16,4 +11,10 @@ let stat = {
     accepted: 0
 };
 
-export default {sessions, publishers, idlePlayers, nodeEvent, stat};
+export default {
+    sessions,
+    publishers,
+    idlePlayers,
+    nodeEvent: nodeEvent,
+    stat
+};

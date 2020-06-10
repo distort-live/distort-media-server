@@ -14,13 +14,12 @@ import * as express from "express";
 
 import * as WebSocket from "ws";
 
+import context from "../core/context";
+import FlvSession from "../sessions/flvSession";
+
 const bodyParser = require('body-parser');
 const basicAuth = require('basic-auth-connect');
-const FlvSession = require('../sessions/flvSession');
-
 const Logger = require('../core/logger');
-const context = require('../core/context');
-
 const HTTP_PORT = 80;
 const HTTPS_PORT = 443;
 const HTTP_MEDIA_ROOT = './media';
@@ -162,7 +161,7 @@ export default class HttpServer {
 
         context.nodeEvent.on('doneConnect', (id, args) => {
             let session = context.sessions.get(id);
-            let socket = session instanceof FlvSession ? session.req.socket : session.socket;
+            let socket = (session instanceof FlvSession) ? session.req.socket : session.socket;
             context.stat.inbytes += socket.bytesRead;
             context.stat.outbytes += socket.bytesWritten;
         });

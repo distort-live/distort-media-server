@@ -3,11 +3,12 @@
 //  illuspas[a]gmail.com
 //  Copyright (c) 2018 Nodemedia. All rights reserved.
 //
+import context from "./context";
+
 const Crypto = require('crypto');
 const EventEmitter = require('events');
 const {spawn} = require('child_process');
 const readline = require('readline');
-const context = require('./context');
 
 function generateNewSessionID() {
     let sessionID = '';
