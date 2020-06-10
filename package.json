@@ -2,9 +2,10 @@
   "name": "@distort-live/distort-media-server",
   "version": "2.1.11",
   "description": "A fork of node-media-server",
-  "main": "node_media_server.js",
+  "main": "build/index.js",
   "scripts": {
-    "test": "node app.js"
+    "test": "node test/app.js",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -32,5 +33,11 @@
   },
   "engines": {
     "node": ">=8.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.0.13",
+    "@types/ws": "^7.2.5",
+    "tslib": "^2.0.0",
+    "typescript": "^3.9.5"
   }
 }
