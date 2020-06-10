@@ -1,6 +1,6 @@
 const chalk = require('chalk');
 
-LOG_TYPES = {
+const LOG_TYPES = {
     NONE: 0,
     ERROR: 1,
     NORMAL: 2,
@@ -45,7 +45,7 @@ const ffdebug = (...args) => {
     console.log(logTime(), process.pid, chalk.bold.blue('[FFDEBUG]'), ...args);
 };
 
-module.exports = {
+export default {
     LOG_TYPES,
     setLogType,
 

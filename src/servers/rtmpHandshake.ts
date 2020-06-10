@@ -75,13 +75,13 @@ function generateS1(messageFormat) {
         serverDigestOffset = GetServerGenuineConstDigestOffset(handshakeBytes.slice(772, 776));
     }
 
-    msg = Buffer.concat([handshakeBytes.slice(0, serverDigestOffset), handshakeBytes.slice(serverDigestOffset + SHA256DL)], RTMP_SIG_SIZE - SHA256DL);
-    hash = calcHmac(msg, GenuineFMSConst);
+    let msg = Buffer.concat([handshakeBytes.slice(0, serverDigestOffset), handshakeBytes.slice(serverDigestOffset + SHA256DL)], RTMP_SIG_SIZE - SHA256DL);
+    let hash = calcHmac(msg, GenuineFMSConst);
     hash.copy(handshakeBytes, serverDigestOffset, 0, 32);
     return handshakeBytes;
 }
 
-function generateS2(messageFormat, clientsig, callback) {
+function generateS2(messageFormat, clientsig, callback?) {
     let randomBytes = Crypto.randomBytes(RTMP_SIG_SIZE - 32);
     let challengeKeyOffset;
     if (messageFormat === 1) {
@@ -110,4 +110,4 @@ function generateS0S1S2(clientsig) {
     return allBytes;
 }
 
-module.exports = {generateS0S1S2};
+export = {generateS0S1S2};

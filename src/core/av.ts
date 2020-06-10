@@ -70,7 +70,7 @@ function getSampleRate(bitop, info) {
 }
 
 function readAACSpecificConfig(aacSequenceHeader) {
-    let info = {};
+    let info: any = {};
     let bitop = new Bitop(aacSequenceHeader);
     bitop.read(16);
     info.object_type = getObjectType(bitop);
@@ -118,7 +118,7 @@ function getAACProfileName(info) {
 }
 
 function readH264SpecificConfig(avcSequenceHeader) {
-    let info = {};
+    let info: any = {};
     let profile_idc, width, height, crop_left, crop_right,
         crop_top, crop_bottom, frame_mbs_only, n, cf_idc,
         num_ref_frames;
@@ -274,7 +274,7 @@ function readH264SpecificConfig(avcSequenceHeader) {
 }
 
 function HEVCParsePtl(bitop, hevc, max_sub_layers_minus1) {
-    let general_ptl = {};
+    let general_ptl: any = {};
 
     general_ptl.profile_space = bitop.read(2);
     general_ptl.tier_flag = bitop.read(1);
@@ -335,7 +335,7 @@ function HEVCParsePtl(bitop, hevc, max_sub_layers_minus1) {
 }
 
 function HEVCParseSPS(SPS, hevc) {
-    let psps = {};
+    let psps: any = {};
     let NumBytesInNALunit = SPS.length;
     let NumBytesInRBSP = 0;
     let rbsp_array = [];
@@ -373,7 +373,9 @@ function HEVCParseSPS(SPS, hevc) {
     psps.pic_height_in_luma_samples = rbspBitop.read_golomb();
     psps.conformance_window_flag = rbspBitop.read(1);
     if (psps.conformance_window_flag) {
+        // @ts-ignore
         let vert_mult = 1 + (psps.chroma_format_idc < 2);
+        // @ts-ignore
         let horiz_mult = 1 + (psps.chroma_format_idc < 3);
         psps.conf_win_left_offset = rbspBitop.read_golomb() * horiz_mult;
         psps.conf_win_right_offset = rbspBitop.read_golomb() * horiz_mult;
@@ -385,7 +387,7 @@ function HEVCParseSPS(SPS, hevc) {
 }
 
 function readHEVCSpecificConfig(hevcSequenceHeader) {
-    let info = {};
+    let info: any = {};
     info.width = 0;
     info.height = 0;
     info.profile = 0;
@@ -395,7 +397,7 @@ function readHEVCSpecificConfig(hevcSequenceHeader) {
     hevcSequenceHeader = hevcSequenceHeader.slice(5);
 
     do {
-        let hevc = {};
+        let hevc: any = {};
         if (hevcSequenceHeader.length < 23) {
             break;
         }
@@ -435,7 +437,7 @@ function readHEVCSpecificConfig(hevcSequenceHeader) {
                 if (p.length < 2) {
                     break;
                 }
-                k = (p[0] << 8) | p[1];
+                let k = (p[0] << 8) | p[1];
                 // Logger.debug('k', k);
                 if (p.length < 2 + k) {
                     break;

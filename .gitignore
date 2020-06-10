@@ -1,4 +1,4 @@
-build
+/build/
 
 # Logs
 logs
@@ -28,7 +28,8 @@ package-lock.json
 .lock-wscript
 *.m4s
 *.m3u8
-*.ts
+/media/**
+/test/media/**
 *.mp4
 *.mpd
 

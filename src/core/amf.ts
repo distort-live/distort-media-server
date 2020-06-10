@@ -89,6 +89,7 @@ function amfType(o) {
     if (jsType === 'string') return 'string';
     if (jsType === 'object') {
         if (o instanceof Array) {
+            // @ts-ignore
             if (o.sarray) return 'sarray';
             return 'array';
         }
@@ -255,7 +256,10 @@ function amf3encInteger(num) {
  */
 function amf3decString(buf) {
     let sLen = amf3decUI29(buf);
+    // @ts-ignore
     let s = sLen & 1;
+
+    // @ts-ignore
     sLen = sLen >> 1; // The real length without the lowest bit
     if (s) return {len: sLen.value + 5, value: buf.slice(5, sLen.value + 5).toString('utf8')};
     throw new Error("Error, we have a need to decode a String that is a Reference"); // TODO: Implement references!
@@ -280,7 +284,9 @@ function amf3encString(str) {
  */
 function amf3decXmlDoc(buf) {
     let sLen = amf3decUI29(buf);
+    // @ts-ignore
     let s = sLen & 1;
+    // @ts-ignore
     sLen = sLen >> 1; // The real length without the lowest bit
     if (s) return {len: sLen.value + 5, value: buf.slice(5, sLen.value + 5).toString('utf8')};
     throw new Error("Error, we have a need to decode a String that is a Reference"); // TODO: Implement references!
@@ -305,7 +311,9 @@ function amf3encXmlDoc(str) {
  */
 function amf3decXml(buf) {
     let sLen = amf3decUI29(buf);
+    // @ts-ignore
     let s = sLen & 1;
+    // @ts-ignore
     sLen = sLen >> 1; // The real length without the lowest bit
     if (s) return {len: sLen.value + 5, value: buf.slice(5, sLen.value + 5).toString('utf8')};
     throw new Error("Error, we have a need to decode a String that is a Reference"); // TODO: Implement references!
@@ -330,7 +338,9 @@ function amf3encXml(str) {
  */
 function amf3decByteArray(buf) {
     let sLen = amf3decUI29(buf);
+// @ts-ignore
     let s = sLen & 1; // TODO: Check if we follow the same rule!
+    // @ts-ignore
     sLen = sLen >> 1; // The real length without the lowest bit
     if (s) return {len: sLen.value + 5, value: buf.slice(5, sLen.value + 5)};
     throw new Error("Error, we have a need to decode a String that is a Reference"); // TODO: Implement references!
@@ -402,6 +412,7 @@ function amf3decArray(buf) {
     let count = amf3decUI29(buf.slice(1));
     let obj = amf3decObject(buf.slice(count.len));
     if (count.value % 2 === 1) throw new Error("This is a reference to another array, which currently we don't support!");
+    // @ts-ignore
     return {len: count.len + obj.len, value: obj.value}
 }
 
@@ -789,6 +800,7 @@ function amf0markSArray(a) {
 function amf0decTypedObj(buf) {
     let className = amf0decString(buf);
     let obj = amf0decObject(buf.slice(className.len - 1));
+    // @ts-ignore
     obj.value.__className__ = className.value;
     return {len: className.len + obj.len - 1, value: obj.value}
 }
@@ -981,6 +993,7 @@ function decodeAmf0Data(dbuf) {
 
     let cmd = amf0DecodeOne(buffer);
     if (cmd) {
+        // @ts-ignore
         resp.cmd = cmd.value;
         buffer = buffer.slice(cmd.len);
 
@@ -1012,6 +1025,7 @@ function decodeAMF0Cmd(dbuf) {
     let resp = {};
 
     let cmd = amf0DecodeOne(buffer);
+    // @ts-ignore
     resp.cmd = cmd.value;
     buffer = buffer.slice(cmd.len);
 
@@ -1074,6 +1088,7 @@ function decodeAMF3Cmd(dbuf) {
     let resp = {};
 
     let cmd = amf3DecodeOne(buffer);
+    // @ts-ignore
     resp.cmd = cmd.value;
     buffer = buffer.slice(cmd.len);
 
@@ -1110,7 +1125,7 @@ function encodeAMF3Cmd(opt) {
     return data
 }
 
-module.exports = {
+export = {
     decodeAmf3Cmd: decodeAMF3Cmd,
     encodeAmf3Cmd: encodeAMF3Cmd,
     decodeAmf0Cmd: decodeAMF0Cmd,

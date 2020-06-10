@@ -57,7 +57,7 @@ function pushStream(req, res, next) {
     }
 }
 
-module.exports = {
+export = {
     getStreams,
     pullStream,
     pushStream

@@ -3,18 +3,23 @@
 //  illuspas[a]gmail.com
 //  Copyright (c) 2018 Nodemedia. All rights reserved.
 //
-const Logger = require('../core/logger');
+import TransSession from "../sessions/transSession";
+import context from "../core/context";
+import Logger from "../core/logger";
 
-const NodeTransSession = require('../sessions/transSession');
-const context = require('../core/context');
 const {getFFmpegVersion, getFFmpegUrl} = require('../core/utils');
 const fs = require('fs');
 const _ = require('lodash');
 const mkdirp = require('mkdirp');
 
 export default class TransServer {
+    config: any;
+    transSessions: any;
+
     constructor(config) {
+        // @ts-ignore
         this.config = config;
+        // @ts-ignore
         this.transSessions = new Map();
     }
 

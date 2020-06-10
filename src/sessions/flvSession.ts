@@ -1,8 +1,8 @@
 import * as url from "url";
+import context from "../core/context";
 
 const AMF = require("../core/amf");
 const Logger = require("../core/logger");
-const context = require("../core/context");
 const NodeCoreUtils = require("../core/utils");
 
 const FlvPacket = {

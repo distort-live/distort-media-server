@@ -6,7 +6,7 @@
 
 import * as net from "net";
 
-import * as Logger from "../core/logger";
+import Logger from "../core/logger";
 
 import Context from "../core/context";
 import RtmpSession from "../sessions/rtmpSession";
