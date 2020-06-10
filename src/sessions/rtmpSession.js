@@ -5,15 +5,15 @@
 //
 
 const QueryString = require("querystring");
-const AV = require("./core/av");
-const { AUDIO_SOUND_RATE, AUDIO_CODEC_NAME, VIDEO_CODEC_NAME } = require("./core/av");
+const AV = require("../core/av");
+const { AUDIO_SOUND_RATE, AUDIO_CODEC_NAME, VIDEO_CODEC_NAME } = require("../core/av");
 
-const AMF = require("./core/amf");
-const Handshake = require("./node_rtmp_handshake");
-const NodeCoreUtils = require("./core/utils");
-const NodeFlvSession = require("./sessions/flvSession");
-const context = require("./core/context");
-const Logger = require("./core/logger");
+const AMF = require("../core/amf");
+const Handshake = require("../servers/rtmpHandshake");
+const NodeCoreUtils = require("../core/utils");
+const NodeFlvSession = require("./flvSession");
+const context = require("../core/context");
+const Logger = require("../core/logger");
 
 const N_CHUNK_STREAM = 8;
 const RTMP_VERSION = 3;
@@ -101,7 +101,7 @@ const RtmpPacket = {
   }
 };
 
-class NodeRtmpSession {
+export default class NodeRtmpSession {
   constructor(config, socket) {
     this.config = config;
     this.socket = socket;
@@ -1261,5 +1261,3 @@ class NodeRtmpSession {
     }
   }
 }
-
-module.exports = NodeRtmpSession;

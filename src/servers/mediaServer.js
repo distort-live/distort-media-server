@@ -4,13 +4,13 @@
 //  Copyright (c) 2018 Nodemedia. All rights reserved.
 //
 
-const Logger = require('./core/logger');
-const NodeRtmpServer = require('./node_rtmp_server');
+const Logger = require('../core/logger');
+const NodeRtmpServer = require('./rtmpServer');
 const NodeHttpServer = require('./httpServer');
-const NodeTransServer = require('./node_trans_server');
-const NodeRelayServer = require('./node_relay_server');
-const context = require('./core/context');
-const Package = require("../package.json");
+const NodeTransServer = require('./transServer');
+const NodeRelayServer = require('./relayServer');
+const context = require('../core/context');
+const Package = require("../../package.json");
 
 export default class NodeMediaServer {
   constructor(config) {
