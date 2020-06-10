@@ -4,9 +4,6 @@
 //  Copyright (c) 2018 Nodemedia. All rights reserved.
 //
 
-import context from "../core/context";
-import FlvSession from "./flvSession";
-
 const QueryString = require("querystring");
 const AV = require("../core/av");
 const {AUDIO_SOUND_RATE, AUDIO_CODEC_NAME, VIDEO_CODEC_NAME} = require("../core/av");
@@ -14,7 +11,9 @@ const {AUDIO_SOUND_RATE, AUDIO_CODEC_NAME, VIDEO_CODEC_NAME} = require("../core/
 const AMF = require("../core/amf");
 const Handshake = require("../servers/rtmpHandshake");
 const NodeCoreUtils = require("../core/utils");
-const Logger = require("../core/logger");
+const FlvSession = require("./flvSession").default;
+import context from "../core/context";
+import Logger from "../core/logger";
 
 const N_CHUNK_STREAM = 8;
 const RTMP_VERSION = 3;
@@ -103,6 +102,70 @@ const RtmpPacket = {
 };
 
 export default class RtmpSession {
+    config: any;
+    socket: any;
+    res: any;
+    id: any;
+    ip: any;
+    TAG: string;
+    handshakePayload: Buffer;
+    handshakeState: number;
+    handshakeBytes: number;
+    parserBuffer: Buffer;
+    parserState: number;
+    parserBytes: number;
+    parserBasicBytes: number;
+    parserPacket: any;
+    inPackets: Map<any, any>;
+    inChunkSize: number;
+    outChunkSize: any;
+    pingTime: number;
+    pingTimeout: number;
+    pingInterval: any;
+    isLocal: boolean;
+    isStarting: boolean;
+    isPublishing: boolean;
+    isPlaying: boolean;
+    isIdling: boolean;
+    isPause: boolean;
+    isReceiveAudio: boolean;
+    isReceiveVideo: boolean;
+    metaData: any;
+    aacSequenceHeader: any;
+    avcSequenceHeader: any;
+    audioCodec: number;
+    audioCodecName: string;
+    audioProfileName: string;
+    audioSamplerate: number;
+    audioChannels: number;
+    videoCodec: number;
+    videoCodecName: string;
+    videoProfileName: string;
+    videoWidth: number;
+    videoHeight: number;
+    videoFps: number;
+    videoLevel: number;
+    gopCacheEnable: any;
+    rtmpGopCacheQueue: any;
+    flvGopCacheQueue: any;
+    ackSize: number;
+    inAckSize: number;
+    inLastAck: number;
+    appname: string;
+    streams: number;
+    playStreamId: number;
+    playStreamPath: string;
+    playArgs: {};
+    publishStreamId: number;
+    publishStreamPath: string;
+    publishArgs: any;
+    players: Set<unknown>;
+    numPlayCache: number;
+    isFirstAudioReceived: boolean;
+    startTimestamp: number;
+    objectEncoding: any;
+    connectTime: Date;
+
     constructor(config, socket) {
         this.config = config;
         this.socket = socket;
@@ -208,6 +271,10 @@ export default class RtmpSession {
             context.sessions.delete(this.id);
             this.socket.destroy();
         }
+    }
+
+    connectCmdObj(arg0: string, id: any, connectCmdObj: any) {
+        throw new Error("Method not implemented.");
     }
 
     reject() {
@@ -539,8 +606,10 @@ export default class RtmpSession {
             case RTMP_TYPE_ACKNOWLEDGEMENT:
             case RTMP_TYPE_WINDOW_ACKNOWLEDGEMENT_SIZE:
             case RTMP_TYPE_SET_PEER_BANDWIDTH:
+                // @ts-ignore
                 return 0 === this.rtmpControlHandler() ? -1 : 0;
             case RTMP_TYPE_EVENT:
+                // @ts-ignore
                 return 0 === this.rtmpEventHandler() ? -1 : 0;
             case RTMP_TYPE_AUDIO:
                 return this.rtmpAudioHandler();
@@ -973,6 +1042,7 @@ export default class RtmpSession {
         this.sendStreamStatus(STREAM_BEGIN, this.playStreamId);
         this.sendStatusMessage(this.playStreamId, "status", "NetStream.Play.Reset", "Playing and resetting stream.");
         this.sendStatusMessage(this.playStreamId, "status", "NetStream.Play.Start", "Started playing stream.");
+        // @ts-ignore
         this.sendRtmpSampleAccess();
     }
 
@@ -1015,6 +1085,7 @@ export default class RtmpSession {
         }
 
         if (this.config.auth && this.config.auth.publish && !this.isLocal) {
+            // @ts-ignore
             let results = NodeCoreUtils.verifyAuth(this.publishArgs.sign, this.publishStreamPath, this.config.auth.secret);
             if (!results) {
                 Logger.log(`[rtmp publish] Unauthorized. id=${this.id} streamPath=${this.publishStreamPath} streamId=${this.publishStreamId} sign=${this.publishArgs.sign} `);
@@ -1060,8 +1131,10 @@ export default class RtmpSession {
         }
 
         if (this.config.auth && this.config.auth.play && !this.isLocal) {
+            // @ts-ignore
             let results = NodeCoreUtils.verifyAuth(this.playArgs.sign, this.playStreamPath, this.config.auth.secret);
             if (!results) {
+                // @ts-ignore
                 Logger.log(`[rtmp play] Unauthorized. id=${this.id} streamPath=${this.playStreamPath}  streamId=${this.playStreamId} sign=${this.playArgs.sign}`);
                 this.sendStatusMessage(this.playStreamId, "error", "NetStream.play.Unauthorized", "Authorization required.");
                 return;
@@ -1179,6 +1252,7 @@ export default class RtmpSession {
         } else {
             this.sendStreamStatus(STREAM_EOF, this.playStreamId);
         }
+        // @ts-ignore
         this.sendStatusMessage(this.playStreamId, c, d);
     }
 

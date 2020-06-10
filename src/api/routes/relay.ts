@@ -1,6 +1,7 @@
 const express = require('express');
 const relayController = require('../controllers/relay');
-module.exports = (context) => {
+
+export = (context) => {
     let router = express.Router();
     router.get('/', relayController.getStreams.bind(context));
     router.post('/pull', relayController.pullStream.bind(context));

@@ -3,7 +3,7 @@
 //  illuspas[a]gmail.com
 //  Copyright (c) 2018 Nodemedia. All rights reserved.
 //
-import * as Logger from "../core/logger";
+import Logger from "../core/logger";
 import {EventEmitter} from "events";
 import {ChildProcessWithoutNullStreams} from "child_process";
 

@@ -1,6 +1,6 @@
 const _ = require('lodash');
 
-function getStreams(req, res, next) {
+export function getStreams(req, res, next) {
     let stats = {};
 
     this.sessions.forEach(function (session, id) {
@@ -84,7 +84,7 @@ function getStreams(req, res, next) {
     res.json(stats);
 }
 
-function getStream(req, res, next) {
+export function getStream(req, res, next) {
 
     let streamStats = {
         isLive: false,
@@ -109,7 +109,7 @@ function getStream(req, res, next) {
     res.json(streamStats);
 }
 
-function delStream(req, res, next) {
+export function delStream(req, res, next) {
     let publishStreamPath = `/${req.params.app}/${req.params.stream}`;
     let publisherSession = this.sessions.get(
         this.publishers.get(publishStreamPath)
@@ -122,7 +122,3 @@ function delStream(req, res, next) {
         res.json({error: "stream not found"}, 404);
     }
 }
-
-exports.delStream = delStream;
-exports.getStreams = getStreams;
-exports.getStream = getStream;

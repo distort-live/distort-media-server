@@ -17,9 +17,10 @@ import * as WebSocket from "ws";
 import context from "../core/context";
 import FlvSession from "../sessions/flvSession";
 
+import Logger from "../core/logger";
+
 const bodyParser = require('body-parser');
 const basicAuth = require('basic-auth-connect');
-const Logger = require('../core/logger');
 const HTTP_PORT = 80;
 const HTTPS_PORT = 443;
 const HTTP_MEDIA_ROOT = './media';
@@ -71,7 +72,7 @@ export default class HttpServer {
             app.use('/api/server', serverRoute(context));
             app.use('/api/relay', relayRoute(context));
         }
-
+        console.log("F", this.mediaRoot)
         app.use(express.static(path.join(__dirname + '/public')));
         app.use(express.static(this.mediaRoot));
         if (config.paths.web_root) {

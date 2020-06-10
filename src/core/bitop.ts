@@ -1,4 +1,10 @@
-class Bitop {
+export = class Bitop {
+    buffer: any;
+    buflen: any;
+    bufpos: number;
+    bufoff: number;
+    iserro: boolean;
+
     constructor(buffer) {
         this.buffer = buffer;
         this.buflen = buffer.length;
@@ -48,6 +54,3 @@ class Bitop {
         return (1 << n) + this.read(n) - 1;
     }
 }
-
-module.exports = Bitop;
-  

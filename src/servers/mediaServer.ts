@@ -4,7 +4,7 @@
 //  Copyright (c) 2018 Nodemedia. All rights reserved.
 //
 
-import * as Logger from "../core/logger";
+import Logger from "../core/logger";
 
 import RtmpServer from "./rtmpServer";
 import HttpServer from "./httpServer";

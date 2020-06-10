@@ -87,7 +87,7 @@ function getFFmpegUrl() {
     return url;
 }
 
-module.exports = {
+export = {
     generateNewSessionID,
     verifyAuth,
     genRandomName,

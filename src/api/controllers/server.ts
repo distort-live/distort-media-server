@@ -3,26 +3,35 @@
 //  illuspas[a]gmail.com
 //  Copyright (c) 2018 Nodemedia. All rights reserved.
 //
+
 const OS = require('os');
 const Package = require("../../../package.json");
+
 function cpuAverage() {
+
     //Initialise sum of idle and time of cores and fetch CPU info
     let totalIdle = 0, totalTick = 0;
     let cpus = OS.cpus();
+
     //Loop through CPU cores
     for (let i = 0, len = cpus.length; i < len; i++) {
+
         //Select CPU core
         let cpu = cpus[i];
+
         //Total up the time in the cores tick
-        for (type in cpu.times) {
+        for (let type in cpu.times) {
             totalTick += cpu.times[type];
         }
+
         //Total up the idle time of the core
         totalIdle += cpu.times.idle;
     }
+
     //Return the average Idle and Tick times
-    return { idle: totalIdle / cpus.length, total: totalTick / cpus.length };
+    return {idle: totalIdle / cpus.length, total: totalTick / cpus.length};
 }
+
 function percentageCPU() {
     return new Promise(function (resolve, reject) {
         let startMeasure = cpuAverage();
@@ -31,12 +40,14 @@ function percentageCPU() {
             //Calculate the difference in idle and total time between the measures
             let idleDifference = endMeasure.idle - startMeasure.idle;
             let totalDifference = endMeasure.total - startMeasure.total;
+
             //Calculate the average percentage CPU usage
             let percentageCPU = 100 - ~~(100 * idleDifference / totalDifference);
             resolve(percentageCPU);
         }, 100);
     });
 }
+
 function getSessionsInfo(sessions) {
     let info = {
         inbytes: 0,
@@ -45,9 +56,9 @@ function getSessionsInfo(sessions) {
         http: 0,
         ws: 0,
     };
+
     for (let session of sessions.values()) {
-        if (session.TAG === 'relay')
-            continue;
+        if (session.TAG === 'relay') continue;
         let socket = session.TAG === 'rtmp' ? session.socket : session.req.socket;
         info.inbytes += socket.bytesRead;
         info.outbytes += socket.bytesWritten;
@@ -55,9 +66,12 @@ function getSessionsInfo(sessions) {
         info.http += session.TAG === 'http-flv' ? 1 : 0;
         info.ws += session.TAG === 'websocket-flv' ? 1 : 0;
     }
+
     return info;
 }
-function getInfo(req, res, next) {
+
+
+export function getInfo(req, res, next) {
     let s = this.sessions;
     percentageCPU().then((cpuload) => {
         let sinfo = getSessionsInfo(s);
@@ -99,4 +113,4 @@ function getInfo(req, res, next) {
         res.json(info);
     });
 }
-exports.getInfo = getInfo;
+

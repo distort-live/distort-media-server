@@ -1,4 +1,4 @@
-import Context from "./core/context"
+const context = require('../core/context');
 import MediaServer from "./servers/mediaServer";
 import RtmpServer from "./servers/rtmpServer";
 import HttpServer from "./servers/httpServer";
@@ -19,5 +19,5 @@ export default {
     RtmpSession,
     RelaySession,
     TransSession,
-    Context
+    Context: context
 }

@@ -105,7 +105,27 @@ const RtmpPacket = {
     }
 };
 
-class NodeRtmpClient {
+class RtmpClient {
+    url: any;
+    info: any;
+    isPublish: boolean;
+    launcher: any;
+    handshakePayload: Buffer;
+    handshakeState: number;
+    handshakeBytes: number;
+    parserBuffer: Buffer;
+    parserState: number;
+    parserBytes: number;
+    parserBasicBytes: number;
+    parserPacket: any;
+    inPackets: Map<any, any>;
+    inChunkSize: number;
+    outChunkSize: number;
+    streamId: number;
+    isSocketOpen: boolean;
+    socket: any;
+    ackSize: any;
+
     constructor(rtmpUrl) {
         this.url = rtmpUrl;
         this.info = this.rtmpUrlParser(rtmpUrl);
@@ -527,8 +547,10 @@ class NodeRtmpClient {
             case RTMP_TYPE_ACKNOWLEDGEMENT:
             case RTMP_TYPE_WINDOW_ACKNOWLEDGEMENT_SIZE:
             case RTMP_TYPE_SET_PEER_BANDWIDTH:
+                // @ts-ignore
                 return 0 === this.rtmpControlHandler() ? -1 : 0;
             case RTMP_TYPE_EVENT:
+                // @ts-ignore
                 return 0 === this.rtmpEventHandler() ? -1 : 0;
             case RTMP_TYPE_AUDIO:
                 return this.rtmpAudioHandler();
@@ -788,4 +810,4 @@ class NodeRtmpClient {
     }
 }
 
-module.exports = NodeRtmpClient
+export = RtmpClient

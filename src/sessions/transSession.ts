@@ -8,7 +8,7 @@ import * as fs from "fs";
 import * as mkdirp from "mkdirp";
 import * as dateFormat from "dateformat";
 
-import * as Logger from "../core/logger";
+import Logger from "../core/logger";
 
 import {EventEmitter} from "events";
 
