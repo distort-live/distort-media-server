@@ -55,12 +55,13 @@ export default class HttpServer {
             res.header("Access-Control-Allow-Origin", this.config.http.allow_origin);
             res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
             res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
-            res.header("Access-Control-Allow-Credentials", true);
+            res.header("Access-Control-Allow-Credentials", "true");
             req.method === "OPTIONS" ? res.sendStatus(200) : next();
         });
 
         app.get('*.flv', (req, res, next) => {
-            req.nmsConnectionType = 'http';
+            // @ts-ignore
+            req.nmsConnectionType = 'http'; // TODO: Remove this shit
             this.onConnect(req, res);
         });
 
