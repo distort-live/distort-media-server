@@ -72,10 +72,11 @@ export default class TransServer {
         let [app, key] = _.slice(regRes, 1);
         let i = this.config.trans.tasks.length;
         while (i--) {
+            let config = this.config;
+            let conf = this.config.trans.tasks[i];
             this.getStreamName(key).then(streamName => {
-                let conf = this.config.trans.tasks[i];
-                conf.mediaroot = this.config.paths.media_root;
-                conf.rtmpPort = this.config.rtmp.port;
+                conf.mediaroot = config.paths.media_root;
+                conf.rtmpPort = config.rtmp.port;
                 conf.streamPath = streamPath;
                 conf.streamApp = app;
                 conf.streamName = streamName;
