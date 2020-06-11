@@ -22,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/distort-live/distort-media-server/issues"
   },
-  "homepage": "https://distord.live/",
+  "homepage": "https://distort.live/",
   "dependencies": {
     "basic-auth-connect": "^1.0.0",
     "chalk": "^2.4.2",
