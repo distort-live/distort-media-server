@@ -172,7 +172,7 @@ export default class RtmpSession implements Session {
         this.config = config;
         this.socket = socket;
         this.res = socket;
-        this.id = NodeCoreUtils.generateNewSessionID();
+        this.id = NodeCoreUtils.generateSessionId();
         this.ip = socket.remoteAddress;
         this.TAG = "rtmp";
 

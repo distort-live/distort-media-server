@@ -25,12 +25,15 @@ export default interface IConfig {
         key: string;
         cert: string;
     },
-    relay: {
-
-    },
+    relay: {},
     trans: {
+        hls: boolean,
+        hlsFlags: string,
+
+        dash: boolean,
+        dashFlags: string,
+
         nameResolver?: NameResolverFunction;
-        tasks: Array<any>;
     },
     rtmp: {
         port: number

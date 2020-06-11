@@ -2,7 +2,7 @@ import chalk from "chalk";
 
 import {LogType} from "../config";
 
-let logType = LogType.Errors;
+let logType = LogType.Debug;
 
 const setLogType = (type: LogType) => {
     if (typeof type !== 'number') return;
@@ -42,5 +42,8 @@ const ffdebug = (...args) => {
 export default {
     setLogType,
 
-    log, error, debug, ffdebug
+    log,
+    error,
+    debug,
+    ffdebug
 }

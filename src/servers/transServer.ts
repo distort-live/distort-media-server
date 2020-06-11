@@ -64,29 +64,32 @@ export default class TransServer {
         let regRes = /\/(.*)\/(.*)/gi.exec(streamPath);
         let [app, key] = _.slice(regRes, 1);
 
-        let i = this.config.trans.tasks.length;
+        let config = this.config;
 
-        while (i--) {
-            let config = this.config;
-            let conf = this.config.trans.tasks[i];
-            this.getStreamName(key).then(streamName => {
-                conf.mediaroot = config.paths.media_root;
-                conf.rtmpPort = config.rtmp.port;
-                conf.streamPath = streamPath;
-                conf.streamApp = app;
-                conf.streamName = streamName;
-                conf.args = args;
+        let conf: any = {
+            hls: this.config.trans.hls,
+            hlsFlags: this.config.trans.hlsFlags,
 
-                if (app === conf.app) {
-                    let session = new TransSession(conf);
-                    this.sessions.set(id, session);
-                    session.on('end', () => {
-                        this.sessions.delete(id);
-                    });
-                    session.run();
-                }
-            });
-        }
+            dash: this.config.trans.dash,
+            dashFlags: this.config.trans.dashFlags
+        };
+
+        this.getStreamName(key).then(streamName => {
+            conf.mediaroot = config.paths.media_root;
+            conf.rtmpPort = config.rtmp.port;
+            conf.streamPath = streamPath;
+            conf.streamName = streamName;
+            conf.args = args;
+
+            if (app === conf.app) {
+                let session = new TransSession(conf);
+                this.sessions.set(id, session);
+                session.on('end', () => {
+                    this.sessions.delete(id);
+                });
+                session.run();
+            }
+        });
     }
 
     onDonePublish(id: string, streamPath: string, args) {

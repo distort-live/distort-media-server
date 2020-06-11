@@ -38,7 +38,7 @@ export default class TransSession extends EventEmitter implements Session {
         let vc = this.config.vc || 'copy';
         let ac = this.config.ac || 'copy';
         let inPath = 'rtmp://127.0.0.1:' + this.config.rtmpPort + this.config.streamPath;
-        let ouPath = `${this.config.mediaroot}/${this.config.streamApp}/${this.config.streamName}`;
+        let ouPath = `${this.config.mediaroot}/live/${this.config.streamName}`;
         let mapStr = '';
 
         if (this.config.rtmp && this.config.rtmpApp) {
@@ -71,7 +71,9 @@ export default class TransSession extends EventEmitter implements Session {
             mapStr += mapDash;
             Logger.log('[Transmuxing DASH] ' + this.config.streamPath + ' to ' + ouPath + '/' + dashFileName);
         }
+
         mkdirp.sync(ouPath);
+
         let argv = ['-y', '-fflags', 'nobuffer', '-i', inPath];
         Array.prototype.push.apply(argv, ['-c:v', vc]);
         Array.prototype.push.apply(argv, this.config.vcParam);
