@@ -59,9 +59,9 @@ export default class TransServer {
         Logger.log(`Node Media Trans Server started for apps: [ ${apps}] , MediaRoot: ${media_root}, ffmpeg version: ${version}`);
     }
 
-    getStreamName(key) {
+    async getStreamName(key) {
         if (this.config.trans.nameResolver) {
-            return this.config.trans.nameResolver(key);
+            return await this.config.trans.nameResolver(key);
         } else {
             return key;
         }
@@ -72,21 +72,23 @@ export default class TransServer {
         let [app, key] = _.slice(regRes, 1);
         let i = this.config.trans.tasks.length;
         while (i--) {
-            let conf = this.config.trans.tasks[i];
-            conf.mediaroot = this.config.paths.media_root;
-            conf.rtmpPort = this.config.rtmp.port;
-            conf.streamPath = streamPath;
-            conf.streamApp = app;
-            conf.streamName = this.getStreamName(key);
-            conf.args = args;
-            if (app === conf.app) {
-                let session = new TransSession(conf);
-                this.transSessions.set(id, session);
-                session.on('end', () => {
-                    this.transSessions.delete(id);
-                });
-                session.run();
-            }
+            this.getStreamName(key).then(streamName => {
+                let conf = this.config.trans.tasks[i];
+                conf.mediaroot = this.config.paths.media_root;
+                conf.rtmpPort = this.config.rtmp.port;
+                conf.streamPath = streamPath;
+                conf.streamApp = app;
+                conf.streamName = streamName;
+                conf.args = args;
+                if (app === conf.app) {
+                    let session = new TransSession(conf);
+                    this.transSessions.set(id, session);
+                    session.on('end', () => {
+                        this.transSessions.delete(id);
+                    });
+                    session.run();
+                }
+            });
         }
     }
 
