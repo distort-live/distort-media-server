@@ -722,7 +722,7 @@ export default class RtmpSession implements Session {
         }
 
         for (let playerId of this.players) {
-            let playerSession = context.sessions.get(playerId);
+            let playerSession: any = context.sessions.get(playerId as any);
 
             if (playerSession.numPlayCache === 0) {
                 playerSession.res.cork();
@@ -805,7 +805,7 @@ export default class RtmpSession implements Session {
 
         // Logger.log(rtmpChunks);
         for (let playerId of this.players) {
-            let playerSession = context.sessions.get(playerId);
+            let playerSession: any = context.sessions.get(playerId as any);
 
             if (playerSession.numPlayCache === 0) {
                 playerSession.res.cork();
@@ -861,14 +861,14 @@ export default class RtmpSession implements Session {
                 let flvTag = FlvSession.createFlvTag(packet);
 
                 for (let playerId of this.players) {
-                    let playerSession = context.sessions.get(playerId);
+                    let playerSession = context.sessions.get(playerId as any);
                     if (playerSession instanceof RtmpSession) {
                         if (playerSession.isStarting && playerSession.isPlaying && !playerSession.isPause) {
                             rtmpChunks.writeUInt32LE(playerSession.playStreamId, 8);
                             playerSession.socket.write(rtmpChunks);
                         }
                     } else if (playerSession instanceof FlvSession) {
-                        playerSession.res.write(flvTag, null, e => {
+                        (playerSession as any).res.write(flvTag, null, e => {
                             //websocket will throw a error if not set the cb when closed
                         });
                     }
@@ -1109,7 +1109,7 @@ export default class RtmpSession implements Session {
 
             this.sendStatusMessage(this.publishStreamId, "status", "NetStream.Publish.Start", `${this.publishStreamPath} is now published.`);
             for (let idlePlayerId of context.idlePlayers) {
-                let idlePlayer = context.sessions.get(idlePlayerId);
+                let idlePlayer: any = context.sessions.get(idlePlayerId as any);
                 if (idlePlayer.playStreamPath === this.publishStreamPath) {
                     idlePlayer.onStartPlay();
                     context.idlePlayers.delete(idlePlayerId);
@@ -1161,7 +1161,7 @@ export default class RtmpSession implements Session {
 
     onStartPlay() {
         let publisherId = context.publishers.get(this.playStreamPath);
-        let publisher = context.sessions.get(publisherId);
+        let publisher: any = context.sessions.get(publisherId);
         let players = publisher.players;
         players.add(this.id);
 
@@ -1224,8 +1224,7 @@ export default class RtmpSession implements Session {
             if (context.publishers.has(this.playStreamPath)) {
                 //fix ckplayer
                 let publisherId = context.publishers.get(this.playStreamPath);
-                let publisher = context.sessions.get(publisherId);
-                let players = publisher.players;
+                let publisher: any = context.sessions.get(publisherId);
                 if (publisher.audioCodec === 10) {
                     let packet = RtmpPacket.create();
                     packet.header.fmt = RTMP_CHUNK_TYPE_0;
@@ -1282,7 +1281,7 @@ export default class RtmpSession implements Session {
             } else {
                 let publisherId = context.publishers.get(this.playStreamPath);
                 if (publisherId != null) {
-                    context.sessions.get(publisherId).players.delete(this.id);
+                    (context.sessions.get(publisherId) as any).players.delete(this.id);
                 }
                 context.nodeEvent.emit("donePlay", this.id, this.playStreamPath, this.playArgs);
                 this.isPlaying = false;
@@ -1304,7 +1303,7 @@ export default class RtmpSession implements Session {
                 }
 
                 for (let playerId of this.players) {
-                    let playerSession = context.sessions.get(playerId);
+                    let playerSession = context.sessions.get(playerId as any);
                     if (playerSession instanceof RtmpSession) {
                         playerSession.sendStatusMessage(playerSession.playStreamId, "status", "NetStream.Play.UnpublishNotify", "stream is now unpublished.");
                         playerSession.flush();
@@ -1315,7 +1314,7 @@ export default class RtmpSession implements Session {
 
                 //let the players to idlePlayers
                 for (let playerId of this.players) {
-                    let playerSession = context.sessions.get(playerId);
+                    let playerSession: any = context.sessions.get(playerId as any);
                     context.idlePlayers.add(playerId);
                     playerSession.isPlaying = false;
                     playerSession.isIdling = true;

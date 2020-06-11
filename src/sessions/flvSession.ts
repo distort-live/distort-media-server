@@ -115,7 +115,7 @@ export default class FlvSession implements Session {
             this.isStarting = false;
             let publisherId = context.publishers.get(this.streamPath);
             if (publisherId != null) {
-                context.sessions.get(publisherId).players.delete(this.id);
+                (context.sessions.get(publisherId) as any).players.delete(this.id);
                 context.nodeEvent.emit("donePlay", this.id, this.streamPath, this.playArgs);
             }
 
@@ -165,7 +165,7 @@ export default class FlvSession implements Session {
 
     onStartPlay() {
         let publisherId = context.publishers.get(this.streamPath);
-        let publisher = context.sessions.get(publisherId);
+        let publisher: any = context.sessions.get(publisherId);
         let players = publisher.players;
         players.add(this.id);
 

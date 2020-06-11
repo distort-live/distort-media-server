@@ -162,7 +162,7 @@ export default class HttpServer {
 
         context.nodeEvent.on('doneConnect', (id, args) => {
             let session = context.sessions.get(id);
-            let socket = (session instanceof FlvSession) ? session.req.socket : session.socket;
+            let socket = (session instanceof FlvSession) ? session.req.socket : (session as any).socket;
             context.stat.inbytes += socket.bytesRead;
             context.stat.outbytes += socket.bytesWritten;
         });

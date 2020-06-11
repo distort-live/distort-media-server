@@ -176,7 +176,7 @@ export default class RelayServer {
 
     onDonePlay(id, streamPath, args) {
         let session = this.dynamicSessions.get(id);
-        let publisher = context.sessions.get(context.publishers.get(streamPath));
+        let publisher: any = context.sessions.get(context.publishers.get(streamPath));
         if (session && publisher.players.size == 0) {
             session.end();
         }
