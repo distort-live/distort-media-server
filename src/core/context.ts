@@ -1,6 +1,7 @@
 import {EventEmitter} from "events";
+import {Session} from "../sessions/Session";
 
-let sessions = new Map();
+let sessions = new Map<string, Session>();
 let publishers = new Map();
 let idlePlayers = new Set();
 

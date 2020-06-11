@@ -1,5 +1,6 @@
 import * as url from "url";
 import context from "../core/context";
+import {Session} from "./Session";
 
 const AMF = require("../core/amf");
 const Logger = require("../core/logger");
@@ -18,7 +19,7 @@ const FlvPacket = {
     }
 };
 
-export default class FlvSession {
+export default class FlvSession implements Session {
     id: string;
     ip: string;
 

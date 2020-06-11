@@ -13,8 +13,9 @@ import Logger from "../core/logger";
 import {EventEmitter} from "events";
 
 import {ChildProcessWithoutNullStreams, spawn} from "child_process";
+import {Session} from "./Session";
 
-export default class TransSession extends EventEmitter {
+export default class TransSession extends EventEmitter implements Session {
     config: any;
 
     ffmpeg_exec: ChildProcessWithoutNullStreams;
@@ -23,6 +24,13 @@ export default class TransSession extends EventEmitter {
         super();
 
         this.config = config;
+    }
+
+    stop() {
+        throw new Error("Method not implemented.");
+    }
+    reject() {
+        throw new Error("Method not implemented.");
     }
 
     run() {

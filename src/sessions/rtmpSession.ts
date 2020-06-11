@@ -4,6 +4,8 @@
 //  Copyright (c) 2018 Nodemedia. All rights reserved.
 //
 
+import {Session} from "./Session";
+
 const QueryString = require("querystring");
 const AV = require("../core/av");
 const {AUDIO_SOUND_RATE, AUDIO_CODEC_NAME, VIDEO_CODEC_NAME} = require("../core/av");
@@ -101,7 +103,7 @@ const RtmpPacket = {
     }
 };
 
-export default class RtmpSession {
+export default class RtmpSession implements Session {
     config: any;
     socket: any;
     res: any;
