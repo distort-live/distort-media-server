@@ -59,9 +59,17 @@ export default class TransServer {
         Logger.log(`Node Media Trans Server started for apps: [ ${apps}] , MediaRoot: ${media_root}, ffmpeg version: ${version}`);
     }
 
+    getStreamName(key) {
+        if (this.config.trans.nameResolver) {
+            return this.config.trans.nameResolver(key);
+        } else {
+            return key;
+        }
+    }
+
     onPostPublish(id, streamPath, args) {
         let regRes = /\/(.*)\/(.*)/gi.exec(streamPath);
-        let [app, name] = _.slice(regRes, 1);
+        let [app, key] = _.slice(regRes, 1);
         let i = this.config.trans.tasks.length;
         while (i--) {
             let conf = this.config.trans.tasks[i];
@@ -69,7 +77,7 @@ export default class TransServer {
             conf.rtmpPort = this.config.rtmp.port;
             conf.streamPath = streamPath;
             conf.streamApp = app;
-            conf.streamName = name;
+            conf.streamName = this.getStreamName(key);
             conf.args = args;
             if (app === conf.app) {
                 let session = new TransSession(conf);
