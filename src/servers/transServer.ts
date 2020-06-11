@@ -81,14 +81,12 @@ export default class TransServer {
             conf.streamName = streamName;
             conf.args = args;
 
-            if (app === conf.app) {
-                let session = new TransSession(conf);
-                this.sessions.set(id, session);
-                session.on('end', () => {
-                    this.sessions.delete(id);
-                });
-                session.run();
-            }
+            let session = new TransSession(conf);
+            this.sessions.set(id, session);
+            session.on('end', () => {
+                this.sessions.delete(id);
+            });
+            session.run();
         });
     }
 
