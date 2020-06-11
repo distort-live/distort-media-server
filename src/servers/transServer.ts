@@ -3,8 +3,8 @@
 //  illuspas[a]gmail.com
 //  Copyright (c) 2018 Nodemedia. All rights reserved.
 //
+import * as context from "../core/context";
 import TransSession from "../sessions/transSession";
-import context from "../core/context";
 import Logger from "../core/logger";
 
 const {getFFmpegVersion, getFFmpegUrl} = require('../core/utils');

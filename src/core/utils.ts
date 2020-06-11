@@ -3,7 +3,7 @@
 //  illuspas[a]gmail.com
 //  Copyright (c) 2018 Nodemedia. All rights reserved.
 //
-import context from "./context";
+import * as context from "./context";
 
 const Crypto = require('crypto');
 const EventEmitter = require('events');

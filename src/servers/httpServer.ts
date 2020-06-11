@@ -9,14 +9,11 @@ import * as fs from "fs";
 import * as path from "path";
 import * as http from "http";
 import * as https from "https";
-
 import * as express from "express";
-
 import * as WebSocket from "ws";
+import * as context from "../core/context";
 
-import context from "../core/context";
 import FlvSession from "../sessions/flvSession";
-
 import Logger from "../core/logger";
 
 const bodyParser = require('body-parser');

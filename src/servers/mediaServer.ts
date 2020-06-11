@@ -11,7 +11,7 @@ import HttpServer from "./httpServer";
 import TransServer from "./transServer";
 import RelayServer from "./relayServer";
 
-import Context from "../core/context";
+import * as Context from "../core/context";
 
 export default class MediaServer {
     config: any;

@@ -7,7 +7,7 @@ const Logger = require('../core/logger');
 
 const NodeCoreUtils = require('../core/utils');
 const RelaySession = require('../sessions/relaySession');
-import context from "../core/context";
+import * as context from "../core/context";
 
 const {getFFmpegVersion, getFFmpegUrl} = require('../core/utils');
 const fs = require('fs');

@@ -1,5 +1,5 @@
 import * as url from "url";
-import context from "../core/context";
+import * as context from "../core/context";
 import {Session} from "./Session";
 
 const AMF = require("../core/amf");

@@ -14,7 +14,7 @@ const AMF = require("../core/amf");
 const Handshake = require("../servers/rtmpHandshake");
 const NodeCoreUtils = require("../core/utils");
 const FlvSession = require("./flvSession").default;
-import context from "../core/context";
+import * as context from "../core/context";
 import Logger from "../core/logger";
 
 const N_CHUNK_STREAM = 8;

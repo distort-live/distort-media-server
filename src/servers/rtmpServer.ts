@@ -8,7 +8,7 @@ import * as net from "net";
 
 import Logger from "../core/logger";
 
-import Context from "../core/context";
+import * as Context from "../core/context";
 import RtmpSession from "../sessions/rtmpSession";
 
 const RTMP_PORT = 1935;
