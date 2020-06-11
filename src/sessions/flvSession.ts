@@ -6,18 +6,14 @@ const AMF = require("../core/amf");
 const Logger = require("../core/logger");
 const NodeCoreUtils = require("../core/utils");
 
-const FlvPacket = {
-    create: (payload = null, type = 0, time = 0) => {
-        return {
-            header: {
-                length: payload ? payload.length : 0,
-                timestamp: time,
-                type: type
-            },
-            payload: payload
-        };
-    }
-};
+interface IFlvSession {
+    header: {
+        type: number;
+        length: number;
+        timestamp: number;
+    },
+    payload?: any;
+}
 
 export default class FlvSession implements Session {
     id: string;
@@ -182,21 +178,43 @@ export default class FlvSession implements Session {
 
         //send Metadata
         if (publisher.metaData != null) {
-            let packet = FlvPacket.create(publisher.metaData, 18);
+            let packet = {
+                payload: publisher.metaData,
+                header: {
+                    type: 18,
+                    length: publisher.metaData.length as number,
+                    timestamp: 0
+                }
+            } as IFlvSession;
+
             let tag = FlvSession.createFlvTag(packet);
             this.res.write(tag);
         }
 
         //send aacSequenceHeader
         if (publisher.audioCodec == 10) {
-            let packet = FlvPacket.create(publisher.aacSequenceHeader, 8);
+            let packet = {
+                payload: publisher.aacSequenceHeader,
+                header: {
+                    type: 8,
+                    length: publisher.aacSequenceHeader.length as number,
+                    timestamp: 0
+                }
+            } as IFlvSession;
             let tag = FlvSession.createFlvTag(packet);
             this.res.write(tag);
         }
 
         //send avcSequenceHeader
         if (publisher.videoCodec == 7 || publisher.videoCodec == 12) {
-            let packet = FlvPacket.create(publisher.avcSequenceHeader, 9);
+            let packet = {
+                payload: publisher.avcSequenceHeader,
+                header: {
+                    type: 9,
+                    length: publisher.avcSequenceHeader.length as number,
+                    timestamp: 0
+                }
+            } as IFlvSession; // FlvPacket.create(publisher.avcSequenceHeader, 9);
             let tag = FlvSession.createFlvTag(packet);
             this.res.write(tag);
         }
