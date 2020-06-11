@@ -3,25 +3,27 @@
 //  illuspas[a]gmail.com
 //  Copyright (c) 2018 Nodemedia. All rights reserved.
 //
-import * as context from "../core/context";
+
+import * as fs from "fs";
+import * as mkdirp from "mkdirp";
+
+import * as _ from "lodash";
+
 import TransSession from "../sessions/transSession";
 import Logger from "../core/logger";
 import ffmpeg = require('ffmpeg-static');
 
+import * as context from "../core/context";
+import IConfig from "../config";
+
 const {getFFmpegVersion} = require('../core/utils');
-const fs = require('fs');
-const _ = require('lodash');
-const mkdirp = require('mkdirp');
 
 export default class TransServer {
-    config: any;
-    transSessions: any;
+    private readonly config: IConfig;
+    private sessions: Map<string, TransSession> = new Map<string, TransSession>();
 
-    constructor(config) {
-        // @ts-ignore
+    constructor(config: IConfig) {
         this.config = config;
-        // @ts-ignore
-        this.transSessions = new Map();
     }
 
     async run() {
@@ -48,29 +50,22 @@ export default class TransServer {
             return;
         }
 
-        let i = this.config.trans.tasks.length;
-        let apps = '';
-        while (i--) {
-            apps += this.config.trans.tasks[i].app;
-            apps += ' ';
-        }
         context.nodeEvent.on('postPublish', this.onPostPublish.bind(this));
         context.nodeEvent.on('donePublish', this.onDonePublish.bind(this));
-        Logger.log(`Node Media Trans Server started for apps: [ ${apps}] , MediaRoot: ${media_root}, ffmpeg version: ${version}`);
+
+        Logger.log(`Node Media Trans Server started with ffmpeg version: ${version}`);
     }
 
-    async getStreamName(key) {
-        if (this.config.trans.nameResolver) {
-            return await this.config.trans.nameResolver(key);
-        } else {
-            return key;
-        }
+    async getStreamName(key: string): Promise<string> {
+        return (this.config.trans.nameResolver) ? (await this.config.trans.nameResolver(key)) : key;
     }
 
-    onPostPublish(id, streamPath, args) {
+    onPostPublish(id: string, streamPath: string, args) {
         let regRes = /\/(.*)\/(.*)/gi.exec(streamPath);
         let [app, key] = _.slice(regRes, 1);
+
         let i = this.config.trans.tasks.length;
+
         while (i--) {
             let config = this.config;
             let conf = this.config.trans.tasks[i];
@@ -81,11 +76,12 @@ export default class TransServer {
                 conf.streamApp = app;
                 conf.streamName = streamName;
                 conf.args = args;
+
                 if (app === conf.app) {
                     let session = new TransSession(conf);
-                    this.transSessions.set(id, session);
+                    this.sessions.set(id, session);
                     session.on('end', () => {
-                        this.transSessions.delete(id);
+                        this.sessions.delete(id);
                     });
                     session.run();
                 }
@@ -93,10 +89,8 @@ export default class TransServer {
         }
     }
 
-    onDonePublish(id, streamPath, args) {
-        let session = this.transSessions.get(id);
-        if (session) {
-            session.end();
-        }
+    onDonePublish(id: string, streamPath: string, args) {
+        let session = this.sessions.get(id);
+        if (session) session.end();
     }
 }

@@ -1,17 +1,18 @@
+import * as crypto from "crypto";
 import * as context from "./context";
 
-const Crypto = require('crypto');
-const {spawn} = require('child_process');
+import {spawn} from "child_process";
 
-function generateNewSessionID() {
+function generateSessionId() {
     let sessionID = '';
     const possible = 'ABCDEFGHIJKLMNOPQRSTUVWKYZ0123456789';
-    const numPossible = possible.length;
+
     do {
         for (let i = 0; i < 8; i++) {
-            sessionID += possible.charAt((Math.random() * numPossible) | 0);
+            sessionID += possible.charAt((Math.random() * possible.length) | 0);
         }
-    } while (context.sessions.has(sessionID))
+    } while (context.sessions.has(sessionID));
+
     return sessionID;
 }
 
@@ -37,12 +38,12 @@ function verifyAuth(signStr, streamId, secretKey) {
     if (exp < now) {
         return false;
     }
-    let md5 = Crypto.createHash('md5');
+    let md5 = crypto.createHash('md5');
     let ohv = md5.update(str).digest('hex');
     return shv === ohv;
 }
 
-function getFFmpegVersion(ffpath) {
+function getFFmpegVersion(ffpath): Promise<string> {
     return new Promise((resolve, reject) => {
         let ffmpeg_exec = spawn(ffpath, ['-version']);
         let version = '';
@@ -62,7 +63,7 @@ function getFFmpegVersion(ffpath) {
 }
 
 export = {
-    generateNewSessionID,
+    generateNewSessionID: generateSessionId,
     verifyAuth,
     genRandomName,
     getFFmpegVersion

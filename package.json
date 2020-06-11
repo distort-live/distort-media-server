@@ -1,6 +1,6 @@
 {
   "name": "distort-media-server",
-  "version": "2.1.13.6",
+  "version": "2.1.13.7",
   "description": "A fork of node-media-server",
   "main": "build/index.js",
   "scripts": {
@@ -37,6 +37,7 @@
     "node": ">=8.0.0"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.155",
     "@types/node": "^14.0.13",
     "@types/ws": "^7.2.5",
     "mocha": "^7.2.0",
