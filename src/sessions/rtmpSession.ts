@@ -4,7 +4,7 @@
 //  Copyright (c) 2018 Nodemedia. All rights reserved.
 //
 
-import {Session} from "./Session";
+import {Session} from "./session";
 
 const QueryString = require("querystring");
 const AV = require("../core/av");
@@ -161,7 +161,7 @@ export default class RtmpSession implements Session {
     publishStreamId: number;
     publishStreamPath: string;
     publishArgs: any;
-    players: Set<unknown>;
+    players: Set<string> = new Set<string>();
     numPlayCache: number;
     isFirstAudioReceived: boolean;
     startTimestamp: number;
@@ -236,7 +236,6 @@ export default class RtmpSession implements Session {
         this.publishStreamPath = "";
         this.publishArgs = {};
 
-        this.players = new Set();
         this.numPlayCache = 0;
         context.sessions.set(this.id, this);
     }

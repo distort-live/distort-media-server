@@ -13,7 +13,7 @@ import Logger from "../core/logger";
 import {EventEmitter} from "events";
 
 import {ChildProcessWithoutNullStreams, spawn} from "child_process";
-import {Session} from "./Session";
+import {Session} from "./session";
 import ffmpeg = require('ffmpeg-static');
 
 export default class TransSession extends EventEmitter implements Session {

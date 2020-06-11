@@ -1,16 +1,10 @@
-const chalk = require('chalk');
+import chalk from "chalk";
 
-const LOG_TYPES = {
-    NONE: 0,
-    ERROR: 1,
-    NORMAL: 2,
-    DEBUG: 3,
-    FFDEBUG: 4
-};
+import {LogType} from "../config";
 
-let logType = LOG_TYPES.NORMAL;
+let logType = LogType.Errors;
 
-const setLogType = (type) => {
+const setLogType = (type: LogType) => {
     if (typeof type !== 'number') return;
 
     logType = type;
@@ -22,31 +16,30 @@ const logTime = () => {
 };
 
 const log = (...args) => {
-    if (logType < LOG_TYPES.NORMAL) return;
+    if (logType < LogType.Normal) return;
 
     console.log(logTime(), process.pid, chalk.bold.green('[INFO]'), ...args);
 };
 
 const error = (...args) => {
-    if (logType < LOG_TYPES.ERROR) return;
+    if (logType < LogType.Errors) return;
 
     console.log(logTime(), process.pid, chalk.bold.red('[ERROR]'), ...args);
 };
 
 const debug = (...args) => {
-    if (logType < LOG_TYPES.DEBUG) return;
+    if (logType < LogType.Debug) return;
 
     console.log(logTime(), process.pid, chalk.bold.blue('[DEBUG]'), ...args);
 };
 
 const ffdebug = (...args) => {
-    if (logType < LOG_TYPES.FFDEBUG) return;
+    if (logType < LogType.FFDebug) return;
 
     console.log(logTime(), process.pid, chalk.bold.blue('[FFDEBUG]'), ...args);
 };
 
 export default {
-    LOG_TYPES,
     setLogType,
 
     log, error, debug, ffdebug

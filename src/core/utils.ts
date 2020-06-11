@@ -63,8 +63,7 @@ function getFFmpegVersion(ffpath): Promise<string> {
 }
 
 export = {
-    generateNewSessionID: generateSessionId,
-    verifyAuth,
-    genRandomName,
-    getFFmpegVersion
+    generateSessionId: generateSessionId,
+    genRandomName: genRandomName,
+    getFFmpegVersion: getFFmpegVersion
 }

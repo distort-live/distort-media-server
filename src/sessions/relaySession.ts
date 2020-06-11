@@ -6,7 +6,7 @@
 import Logger from "../core/logger";
 import {EventEmitter} from "events";
 import {ChildProcessWithoutNullStreams} from "child_process";
-import {Session} from "./Session";
+import {Session} from "./session";
 
 const NodeCoreUtils = require("../core/utils");
 
@@ -19,6 +19,8 @@ const RTSP_TRANSPORT = ['udp', 'tcp', 'udp_multicast', 'http'];
 export default class RelaySession extends EventEmitter implements Session {
     id: string;
     config: any;
+
+    streamPath: string;
 
     ffmpeg_exec: ChildProcessWithoutNullStreams;
 

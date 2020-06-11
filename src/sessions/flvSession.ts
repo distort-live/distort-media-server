@@ -1,9 +1,7 @@
 import * as url from "url";
 import * as context from "../core/context";
-import {Session} from "./Session";
+import {Session} from "./session";
 
-const AMF = require("../core/amf");
-const Logger = require("../core/logger");
 const NodeCoreUtils = require("../core/utils");
 
 interface IFlvSession {
@@ -24,7 +22,6 @@ export default class FlvSession implements Session {
 
     connectCmdObj: any;
 
-    config: any;
     streamPath: string = "";
     connectTime: Date;
     playArgs: any;
@@ -33,9 +30,7 @@ export default class FlvSession implements Session {
     isPlaying: boolean;
     isIdling: boolean;
 
-    constructor(config, req, res) {
-        this.config = config;
-
+    constructor(req, res) {
         this.req = req;
         this.res = res;
 
@@ -109,6 +104,7 @@ export default class FlvSession implements Session {
     stop() {
         if (this.isStarting) {
             this.isStarting = false;
+
             let publisherId = context.publishers.get(this.streamPath);
             if (publisherId != null) {
                 (context.sessions.get(publisherId) as any).players.delete(this.id);
@@ -138,17 +134,7 @@ export default class FlvSession implements Session {
 
     onPlay() {
         context.nodeEvent.emit("prePlay", this.id, this.streamPath, this.playArgs);
-        if (!this.isStarting) {
-            return;
-        }
-        if (this.config.auth !== undefined && this.config.auth.play) {
-            let results = NodeCoreUtils.verifyAuth(this.playArgs.sign, this.streamPath, this.config.auth.secret);
-            if (!results) {
-                this.res.statusCode = 403;
-                this.res.end();
-                return;
-            }
-        }
+        if (!this.isStarting) return;
 
         if (!context.publishers.has(this.streamPath)) {
             context.idlePlayers.add(this.id);

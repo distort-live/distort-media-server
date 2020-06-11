@@ -12,16 +12,17 @@ import TransServer from "./transServer";
 import RelayServer from "./relayServer";
 
 import * as Context from "../core/context";
+import IConfig, {LogType} from "../config";
 
 export default class MediaServer {
-    config: any;
+    config: IConfig;
 
     nrs: RtmpServer;
     nhs: HttpServer;
     nts: TransServer;
     nls: RelayServer;
 
-    constructor(config) {
+    constructor(config: IConfig) {
         this.config = config;
     }
 

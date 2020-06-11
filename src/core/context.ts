@@ -1,9 +1,9 @@
 import {EventEmitter} from "events";
-import {Session} from "../sessions/Session";
+import {Session} from "../sessions/session";
 
 let sessions = new Map<string, Session>();
 let publishers = new Map<string, string>();
-let idlePlayers = new Set();
+let idlePlayers = new Set<string>();
 let nodeEvent = new EventEmitter();
 let stat = {
     inbytes: 0,

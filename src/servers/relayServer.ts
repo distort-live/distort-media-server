@@ -3,15 +3,18 @@
 //  illuspas[a]gmail.com
 //  Copyright (c) 2018 Nodemedia. All rights reserved.
 //
-const Logger = require('../core/logger');
 
-const NodeCoreUtils = require('../core/utils');
-const RelaySession = require('../sessions/relaySession');
+import * as fs from "fs";
+import * as _ from "lodash";
+
 import * as context from "../core/context";
 
+import Logger from '../core/logger';
+
+import NodeCoreUtils = require('../core/utils');
+import RelaySession from '../sessions/relaySession';
+
 const {getFFmpegVersion, getFFmpegUrl} = require('../core/utils');
-const fs = require('fs');
-const _ = require('lodash');
 
 export default class RelayServer {
     config: any;
