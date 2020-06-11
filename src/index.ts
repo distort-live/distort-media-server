@@ -1,4 +1,4 @@
-const context = require('../core/context');
+import context = require('./core/context');
 import MediaServer from "./servers/mediaServer";
 import RtmpServer from "./servers/rtmpServer";
 import HttpServer from "./servers/httpServer";
