@@ -70,7 +70,6 @@ export default class HttpServer {
             app.use('/api/server', serverRoute(context));
             app.use('/api/relay', relayRoute(context));
         }
-        console.log("F", this.mediaRoot)
         app.use(express.static(path.join(__dirname + '/public')));
         app.use(express.static(this.mediaRoot));
         if (config.paths.web_root) {

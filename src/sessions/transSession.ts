@@ -14,6 +14,7 @@ import {EventEmitter} from "events";
 
 import {ChildProcessWithoutNullStreams, spawn} from "child_process";
 import {Session} from "./Session";
+import ffmpeg = require('ffmpeg-static');
 
 export default class TransSession extends EventEmitter implements Session {
     config: any;
@@ -79,18 +80,10 @@ export default class TransSession extends EventEmitter implements Session {
         Array.prototype.push.apply(argv, ['-f', 'tee', '-map', '0:a?', '-map', '0:v?', mapStr]);
         argv = argv.filter((n) => {
             return n
-        }); //去空
-        this.ffmpeg_exec = spawn(this.config.ffmpeg, argv);
+        });
+        this.ffmpeg_exec = spawn(ffmpeg, argv);
         this.ffmpeg_exec.on('error', (e) => {
             Logger.ffdebug(e);
-        });
-
-        this.ffmpeg_exec.stdout.on('data', (data) => {
-            Logger.ffdebug(`FF输出：${data}`);
-        });
-
-        this.ffmpeg_exec.stderr.on('data', (data) => {
-            Logger.ffdebug(`FF输出：${data}`);
         });
 
         this.ffmpeg_exec.on('close', (code) => {

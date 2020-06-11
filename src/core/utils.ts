@@ -1,14 +1,7 @@
-//
-//  Created by Mingliang Chen on 17/8/23.
-//  illuspas[a]gmail.com
-//  Copyright (c) 2018 Nodemedia. All rights reserved.
-//
 import * as context from "./context";
 
 const Crypto = require('crypto');
-const EventEmitter = require('events');
 const {spawn} = require('child_process');
-const readline = require('readline');
 
 function generateNewSessionID() {
     let sessionID = '';
@@ -68,29 +61,9 @@ function getFFmpegVersion(ffpath) {
     });
 }
 
-function getFFmpegUrl() {
-    let url = '';
-    switch (process.platform) {
-        case 'darwin':
-            url = 'https://ffmpeg.zeranoe.com/builds/macos64/static/ffmpeg-latest-macos64-static.zip';
-            break;
-        case 'win32':
-            url = 'https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-latest-win64-static.zip | https://ffmpeg.zeranoe.com/builds/win32/static/ffmpeg-latest-win32-static.zip';
-            break;
-        case 'linux':
-            url = 'https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-64bit-static.tar.xz | https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-32bit-static.tar.xz';
-            break;
-        default:
-            url = 'http://ffmpeg.org/download.html';
-            break;
-    }
-    return url;
-}
-
 export = {
     generateNewSessionID,
     verifyAuth,
     genRandomName,
-    getFFmpegVersion,
-    getFFmpegUrl
+    getFFmpegVersion
 }

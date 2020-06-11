@@ -6,8 +6,9 @@
 import * as context from "../core/context";
 import TransSession from "../sessions/transSession";
 import Logger from "../core/logger";
+import ffmpeg = require('ffmpeg-static');
 
-const {getFFmpegVersion, getFFmpegUrl} = require('../core/utils');
+const {getFFmpegVersion} = require('../core/utils');
 const fs = require('fs');
 const _ = require('lodash');
 const mkdirp = require('mkdirp');
@@ -35,16 +36,15 @@ export default class TransServer {
         }
 
         try {
-            fs.accessSync(this.config.trans.ffmpeg, fs.constants.X_OK);
+            fs.accessSync(ffmpeg, fs.constants.X_OK);
         } catch (error) {
-            Logger.error(`Node Media Trans Server startup failed. ffmpeg:${this.config.trans.ffmpeg} cannot be executed.`);
+            Logger.error(`Node Media Trans Server startup failed. ffmpeg:${ffmpeg} cannot be executed.`);
             return;
         }
 
-        let version = await getFFmpegVersion(this.config.trans.ffmpeg);
+        let version = await getFFmpegVersion(ffmpeg);
         if (version === '' || parseInt(version.split('.')[0]) < 4) {
             Logger.error(`Node Media Trans Server startup failed. ffmpeg requires version 4.0.0 above`);
-            Logger.error('Download the latest ffmpeg static program:', getFFmpegUrl());
             return;
         }
 
@@ -65,7 +65,6 @@ export default class TransServer {
         let i = this.config.trans.tasks.length;
         while (i--) {
             let conf = this.config.trans.tasks[i];
-            conf.ffmpeg = this.config.trans.ffmpeg;
             conf.mediaroot = this.config.paths.media_root;
             conf.rtmpPort = this.config.rtmp.port;
             conf.streamPath = streamPath;
