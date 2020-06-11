@@ -1,6 +1,6 @@
 {
   "name": "distort-media-server",
-  "version": "2.1.12",
+  "version": "2.1.13",
   "description": "A fork of node-media-server",
   "main": "build/index.js",
   "scripts": {
