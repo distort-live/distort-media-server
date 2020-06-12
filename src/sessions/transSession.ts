@@ -28,10 +28,11 @@ export default class TransSession extends EventEmitter implements Session {
     }
 
     stop() {
-        throw new Error("Method not implemented.");
+        if (!this.ffmpeg_exec.killed)
+            this.ffmpeg_exec.kill();
     }
     reject() {
-        throw new Error("Method not implemented.");
+        stop();
     }
 
     run() {
@@ -90,7 +91,7 @@ export default class TransSession extends EventEmitter implements Session {
 
         this.ffmpeg_exec.on('close', (code) => {
             Logger.log('[Transmuxing end] ' + this.config.streamPath);
-            this.emit('end');
+            stop();
             fs.readdir(ouPath, function (err, files) {
                 if (!err) {
                     files.forEach((filename) => {
@@ -105,9 +106,5 @@ export default class TransSession extends EventEmitter implements Session {
                 }
             });
         });
-    }
-
-    end() {
-        // this.ffmpeg_exec.kill();
     }
 }

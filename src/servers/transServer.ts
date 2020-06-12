@@ -92,6 +92,6 @@ export default class TransServer {
 
     onDonePublish(id: string, streamPath: string, args) {
         let session = this.sessions.get(id);
-        if (session) session.end();
+        if (session) session.stop();
     }
 }
