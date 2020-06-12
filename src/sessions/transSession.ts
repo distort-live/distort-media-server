@@ -1,8 +1,3 @@
-//
-//  Created by Mingliang Chen on 18/3/9.
-//  illuspas[a]gmail.com
-//  Copyright (c) 2018 Nodemedia. All rights reserved.
-//
 import * as fs from "fs";
 
 import * as mkdirp from "mkdirp";
@@ -32,7 +27,7 @@ export default class TransSession extends EventEmitter implements Session {
             this.ffmpeg_exec.kill();
     }
     reject() {
-        stop();
+        this.stop();
     }
 
     run() {
@@ -89,9 +84,10 @@ export default class TransSession extends EventEmitter implements Session {
             Logger.ffdebug(e);
         });
 
+        let fake_this = this;
         this.ffmpeg_exec.on('close', (code) => {
             Logger.log('[Transmuxing end] ' + this.config.streamPath);
-            stop();
+            fake_this.stop();
             fs.readdir(ouPath, function (err, files) {
                 if (!err) {
                     files.forEach((filename) => {
