@@ -1,7 +1,6 @@
 import * as fs from "fs";
 
 import * as mkdirp from "mkdirp";
-import * as dateFormat from "dateformat";
 
 import Logger from "../core/logger";
 
@@ -48,7 +47,7 @@ export default class TransSession extends EventEmitter implements Session {
         }
         if (this.config.mp4) {
             this.config.mp4Flags = this.config.mp4Flags ? this.config.mp4Flags : '';
-            let mp4FileName = dateFormat('yyyy-mm-dd-HH-MM') + '.mp4';
+            let mp4FileName = 'index.mp4';
             let mapMp4 = `${this.config.mp4Flags}${ouPath}/${mp4FileName}|`;
             mapStr += mapMp4;
             Logger.log('[Transmuxing MP4] ' + this.config.streamPath + ' to ' + ouPath + '/' + mp4FileName);
@@ -80,6 +79,8 @@ export default class TransSession extends EventEmitter implements Session {
             return n
         });
         this.ffmpeg_exec = spawn(ffmpeg, argv);
+        this.ffmpeg_exec.stdout.pipe(process.stdout);
+        this.ffmpeg_exec.stderr.pipe(process.stderr);
         this.ffmpeg_exec.on('error', (e) => {
             Logger.ffdebug(e);
         });

@@ -27,11 +27,14 @@ export default interface IConfig {
     },
     relay: {},
     trans: {
+        mp4: boolean,
+        mp4Flags?: string,
+
         hls: boolean,
-        hlsFlags: string,
+        hlsFlags?: string,
 
         dash: boolean,
-        dashFlags: string,
+        dashFlags?: string,
 
         nameResolver?: NameResolverFunction;
     },
