@@ -1,13 +1,16 @@
 {
   "name": "distort-media-server",
-  "version": "2.1.14",
+  "version": "2.1.15",
   "description": "A fork of node-media-server",
-  "main": "build/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "mocha",
     "build": "tsc",
-    "postinstall": "npm run build"
+    "prepare": "npm run build"
   },
+  "files": [
+    "lib"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/distort-live/distort-media-server.git"
